@@ -10,14 +10,14 @@ const getRecognition = (): SpeechRecognition => {
   return recognition
 }
 
-export default function Home() {
+export const IndexPage:React.FC = () => {
   const [words, setWords] = useState<string[]>([''])
 
   useEffect(() => {
     const recognition = getRecognition()
     navigator.mediaDevices
-      .getUserMedia({video: false, audio: true})
-      .then(_ => {
+      .getUserMedia({ video: false, audio: true })
+      .then(() => {
         recognition.addEventListener('result', (e) => {
           for (let i = e.resultIndex; i < e.results.length; i++) {
             words[words.length - 1] = e.results[i][0].transcript
@@ -41,3 +41,5 @@ export default function Home() {
     </>
   )
 }
+
+export default IndexPage
