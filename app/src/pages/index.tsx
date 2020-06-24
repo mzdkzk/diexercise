@@ -2,52 +2,57 @@ import React, { useEffect, useState } from 'react'
 import { Word, Button, Layout } from '../components'
 
 const getRecognition = (): SpeechRecognition | null => {
-  if (typeof window === 'undefined') return null
-  const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
-  const recognition = new SpeechRecognition()
-  recognition.lang = 'ja-JP'
-  recognition.interimResults = true
-  recognition.continuous = true
-  return recognition
+  try {
+    const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
+    const recognition = new SpeechRecognition()
+    recognition.lang = 'ja-JP'
+    recognition.interimResults = true
+    recognition.continuous = true
+    return recognition
+  } catch (e) {
+    return null
+  }
 }
 
 export const IndexPage: React.FC = () => {
   const [words, setWords] = useState<string[]>([''])
-  let mediaStream:MediaStream|undefined
+  let mediaStream: MediaStream | undefined
 
   const recognition = getRecognition()
-  if (recognition == null) {
-    return (
-      <p>このブラウザは音声入力に対応していません</p>
-    )
-  }
 
   useEffect(() => {
     return stopRecord
   }, [])
 
   const start = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: false, audio: true })
-      .then(stream => {
-        mediaStream = stream
-        recognition.addEventListener('result', (e) => {
-          for (let i = e.resultIndex; i < e.results.length; i++) {
-            words[words.length - 1] = e.results[i][0].transcript
-            if (e.results[i].isFinal) {
-              words.push('')
+    if (recognition) {
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then(stream => {
+          mediaStream = stream
+          recognition.addEventListener('result', (e) => {
+            for (let i = e.resultIndex; i < e.results.length; i++) {
+              words[words.length - 1] = e.results[i][0].transcript
+              if (e.results[i].isFinal) {
+                words.push('')
+              }
+              setWords(new Array(...words))
             }
-            setWords(new Array(...words))
-          }
+          })
+          recognition.start()
         })
-        recognition.start()
-      })
+    } else {
+      alert('このブラウザは音声入力に対応していません')
+    }
   }
 
   const stopRecord = () => {
-    recognition.stop()
+    if (recognition) {
+      recognition.stop()
+    }
     if (mediaStream) {
       mediaStream.getTracks().forEach(track => track.stop())
+      mediaStream = undefined
     }
   }
 
