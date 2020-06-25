@@ -3,7 +3,9 @@ import { Word, Button, Layout } from '../components'
 
 const getRecognition = (): SpeechRecognition | null => {
   try {
-    const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
+    const SpeechRecognition =
+      (window as any).webkitSpeechRecognition ||
+      (window as any).SpeechRecognition
     const recognition = new SpeechRecognition()
     recognition.lang = 'ja-JP'
     recognition.interimResults = true
@@ -30,7 +32,7 @@ export const IndexPage: React.FC = () => {
         .getUserMedia({ video: false, audio: true })
         .then(stream => {
           mediaStream = stream
-          recognition.addEventListener('result', (e) => {
+          recognition.addEventListener('result', e => {
             for (let i = e.resultIndex; i < e.results.length; i++) {
               words[words.length - 1] = e.results[i][0].transcript
               if (e.results[i].isFinal) {
@@ -59,14 +61,23 @@ export const IndexPage: React.FC = () => {
   return (
     <Layout>
       <Button onClick={start}>Start</Button>
-      <Button onClick={() => {
-        setWords([])
-        stopRecord()
-      }}>Stop</Button>
+      <Button
+        onClick={() => {
+          setWords([])
+          stopRecord()
+        }}>
+        Stop
+      </Button>
       <div>
         {words.map((word, i) => {
-          const color = `rgba(0, 0, 0, ${i === words.length - 1 ? '0.2' : '1.0'})`
-          return <Word key={i} color={color}>{word}</Word>
+          const color = `rgba(0, 0, 0, ${
+            i === words.length - 1 ? '0.2' : '1.0'
+          })`
+          return (
+            <Word key={i} color={color}>
+              {word}
+            </Word>
+          )
         })}
       </div>
     </Layout>
