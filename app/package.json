@@ -8,6 +8,7 @@
     "lint": "eslint src/** --fix"
   },
   "dependencies": {
+    "isomorphic-unfetch": "^3.0.0",
     "next": "latest",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",

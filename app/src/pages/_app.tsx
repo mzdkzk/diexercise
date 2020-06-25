@@ -14,6 +14,12 @@ const App = ({ Component, pageProps }: AppProps) => {
           text-align: center;
           font-family: inherit;
         }
+        html,
+        body,
+        #__next {
+          width: 100%;
+          height: 100%;
+        }
         body {
           color: ${colors.primary};
           font-size: 18px;

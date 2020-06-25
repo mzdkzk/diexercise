@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Word, Button, Layout } from '../components'
+import firestore from '../utils/firestore'
+import request from '../utils/request'
 
 const getRecognition = (): SpeechRecognition | null => {
   try {
@@ -17,13 +19,21 @@ const getRecognition = (): SpeechRecognition | null => {
 }
 
 export const IndexPage: React.FC = () => {
-  const [words, setWords] = useState<string[]>([''])
+  const [prevWords, setPrevWords] = useState<string[]>([''])
+  const [currentWord, setCurrentWord] = useState<string>('')
   let mediaStream: MediaStream | undefined
 
   const recognition = getRecognition()
 
   useEffect(() => {
-    return stopRecord
+    const roomDoc = firestore.collection('rooms').doc('test')
+    const unsubscribe = roomDoc.collection('words').onSnapshot(snapshot => {
+      setPrevWords(snapshot.docs.map(doc => (doc.data() as any).text))
+    })
+    return () => {
+      stopRecord()
+      unsubscribe()
+    }
   }, [])
 
   const start = () => {
@@ -34,11 +44,13 @@ export const IndexPage: React.FC = () => {
           mediaStream = stream
           recognition.addEventListener('result', e => {
             for (let i = e.resultIndex; i < e.results.length; i++) {
-              words[words.length - 1] = e.results[i][0].transcript
+              const result = e.results[i][0].transcript
               if (e.results[i].isFinal) {
-                words.push('')
+                request.post('/api/test', { json: { text: result } })
+                setCurrentWord('')
+              } else {
+                setCurrentWord(result)
               }
-              setWords(new Array(...words))
             }
           })
           recognition.start()
@@ -61,24 +73,12 @@ export const IndexPage: React.FC = () => {
   return (
     <Layout>
       <Button onClick={start}>Start</Button>
-      <Button
-        onClick={() => {
-          setWords([])
-          stopRecord()
-        }}>
-        Stop
-      </Button>
+      <Button onClick={stopRecord}>Stop</Button>
       <div>
-        {words.map((word, i) => {
-          const color = `rgba(0, 0, 0, ${
-            i === words.length - 1 ? '0.2' : '1.0'
-          })`
-          return (
-            <Word key={i} color={color}>
-              {word}
-            </Word>
-          )
-        })}
+        {prevWords.map((word, i) => (
+          <Word key={i}>{word}</Word>
+        ))}
+        <Word color={'rgba(0,0,0,0.3)'}>{currentWord}</Word>
       </div>
     </Layout>
   )
