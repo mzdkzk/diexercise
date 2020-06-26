@@ -16,16 +16,22 @@ const fetcher: Fetcher = async (input, init) => {
   return await unfetch(input, init)
 }
 
-const get: Request = async (input, init?) => {
-  init = init || {}
-  init.method = 'GET'
-  return await fetcher(input, init)
-}
+export default class {
+  static get: Request = async (input, init?) => {
+    init = init || {}
+    init.method = 'GET'
+    return await fetcher(input, init)
+  }
 
-const post: Request = async (input, init?) => {
-  init = init || {}
-  init.method = 'POST'
-  return await fetcher(input, init)
-}
+  static post: Request = async (input, init?) => {
+    init = init || {}
+    init.method = 'POST'
+    return await fetcher(input, init)
+  }
 
-export default { get, post }
+  static delete: Request = async (input, init?) => {
+    init = init || {}
+    init.method = 'DELETE'
+    return await fetcher(input, init)
+  }
+}

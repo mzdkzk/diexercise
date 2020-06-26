@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Word, Button, Layout } from '../components'
-import firestore from '../utils/firestore'
+import firebase from '../utils/firebase'
 import request from '../utils/request'
+import { WordData } from '../type/db'
 
 const getRecognition = (): SpeechRecognition | null => {
   try {
@@ -26,10 +27,14 @@ export const IndexPage: React.FC = () => {
   const recognition = getRecognition()
 
   useEffect(() => {
-    const roomDoc = firestore.collection('rooms').doc('test')
-    const unsubscribe = roomDoc.collection('words').onSnapshot(snapshot => {
-      setPrevWords(snapshot.docs.map(doc => (doc.data() as any).text))
-    })
+    const db = firebase.firestore()
+    const roomDoc = db.collection('rooms').doc('test')
+    const unsubscribe = roomDoc
+      .collection('words')
+      .orderBy('createdAt')
+      .onSnapshot(snapshot => {
+        setPrevWords(snapshot.docs.map(doc => (doc.data() as WordData).text))
+      })
     return () => {
       stopRecord()
       unsubscribe()
@@ -46,8 +51,11 @@ export const IndexPage: React.FC = () => {
             for (let i = e.resultIndex; i < e.results.length; i++) {
               const result = e.results[i][0].transcript
               if (e.results[i].isFinal) {
-                request.post('/api/test', { json: { text: result } })
+                // onSnapshotまでに少しラグがあるため、結果を先に表示
                 setCurrentWord('')
+                prevWords.push(result)
+                setPrevWords(new Array(...prevWords))
+                request.post('/api/test', { json: { text: result } })
               } else {
                 setCurrentWord(result)
               }
@@ -70,10 +78,15 @@ export const IndexPage: React.FC = () => {
     }
   }
 
+  const deleteData = () => {
+    request.delete('/api/test')
+  }
+
   return (
     <Layout>
       <Button onClick={start}>Start</Button>
       <Button onClick={stopRecord}>Stop</Button>
+      <Button onClick={deleteData}>Delete</Button>
       <div>
         {prevWords.map((word, i) => (
           <Word key={i}>{word}</Word>
