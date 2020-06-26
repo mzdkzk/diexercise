@@ -1,7 +1,7 @@
 import unfetch from 'isomorphic-unfetch'
 
 type JSONRequestInit = RequestInit & {
-  json?: { [key: string]: string }
+  json?: { [key: string]: any }
 }
 
 type Fetcher = (input: RequestInfo, init: JSONRequestInit) => Promise<Response>

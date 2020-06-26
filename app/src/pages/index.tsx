@@ -20,52 +20,58 @@ const getRecognition = (): SpeechRecognition | null => {
 }
 
 export const IndexPage: React.FC = () => {
-  const [prevWords, setPrevWords] = useState<string[]>([''])
-  const [currentWord, setCurrentWord] = useState<string>('')
+  const [storedWords, setStoredWords] = useState<string[]>([''])
+
+  let currentWordId: string | undefined
   let mediaStream: MediaStream | undefined
 
   const recognition = getRecognition()
+  const db = firebase.firestore()
+  const wordsRef = db.collection('rooms').doc('test').collection('words')
 
   useEffect(() => {
-    const db = firebase.firestore()
-    const roomDoc = db.collection('rooms').doc('test')
-    const unsubscribe = roomDoc
-      .collection('words')
-      .orderBy('createdAt')
-      .onSnapshot(snapshot => {
-        setPrevWords(snapshot.docs.map(doc => (doc.data() as WordData).text))
-      })
+    const unsubscribe = wordsRef.orderBy('updatedAt').onSnapshot(snapshot => {
+      setStoredWords(snapshot.docs.map(doc => (doc.data() as WordData).text))
+    })
     return () => {
       stopRecord()
       unsubscribe()
     }
   }, [])
 
-  const start = () => {
-    if (recognition) {
-      navigator.mediaDevices
-        .getUserMedia({ video: false, audio: true })
-        .then(stream => {
-          mediaStream = stream
-          recognition.addEventListener('result', e => {
-            for (let i = e.resultIndex; i < e.results.length; i++) {
-              const result = e.results[i][0].transcript
-              if (e.results[i].isFinal) {
-                // onSnapshotまでに少しラグがあるため、結果を先に表示
-                setCurrentWord('')
-                prevWords.push(result)
-                setPrevWords(new Array(...prevWords))
-                request.post('/api/test', { json: { text: result } })
-              } else {
-                setCurrentWord(result)
-              }
-            }
-          })
-          recognition.start()
-        })
-    } else {
+  const start = async () => {
+    if (!recognition) {
       alert('このブラウザは音声入力に対応していません')
+      return
     }
+    mediaStream = await navigator.mediaDevices.getUserMedia({
+      video: false,
+      audio: true
+    })
+    recognition.addEventListener('result', async e => {
+      const result = e.results[e.resultIndex][0].transcript
+      if (e.results[e.resultIndex].isFinal) {
+        request.post(`/api/test/${currentWordId}`, {
+          json: { text: result }
+        })
+        currentWordId = undefined
+        // onSnapshotまでにラグがあるためクライアント側も更新
+        storedWords.push(result)
+        setStoredWords(new Array(...storedWords))
+      } else {
+        if (!currentWordId) {
+          currentWordId = `${+new Date()}`
+        }
+        wordsRef.doc(currentWordId).set(
+          {
+            text: result,
+            updatedAt: new Date()
+          },
+          { merge: true }
+        )
+      }
+    })
+    recognition.start()
   }
 
   const stopRecord = () => {
@@ -88,10 +94,9 @@ export const IndexPage: React.FC = () => {
       <Button onClick={stopRecord}>Stop</Button>
       <Button onClick={deleteData}>Delete</Button>
       <div>
-        {prevWords.map((word, i) => (
+        {storedWords.map((word, i) => (
           <Word key={i}>{word}</Word>
         ))}
-        <Word color={'rgba(0,0,0,0.3)'}>{currentWord}</Word>
       </div>
     </Layout>
   )
