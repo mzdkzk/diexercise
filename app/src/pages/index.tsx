@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Word, Button, Layout } from '../components'
 import firebase from '../utils/firebase'
 import request from '../utils/request'
-import { WordData } from '../type/db'
+import { WordData } from '../scheme/db'
 
 const getRecognition = (): SpeechRecognition | null => {
   try {
