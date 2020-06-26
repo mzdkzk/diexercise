@@ -55,9 +55,6 @@ export const IndexPage: React.FC = () => {
           json: { text: result }
         })
         currentWordId = undefined
-        // onSnapshotまでにラグがあるためクライアント側も更新
-        storedWords.push(result)
-        setStoredWords(new Array(...storedWords))
       } else {
         if (!currentWordId) {
           currentWordId = `${+new Date()}`
