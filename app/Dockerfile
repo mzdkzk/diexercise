@@ -20,4 +20,5 @@ RUN yarn build
 RUN yarn --production
 RUN yarn cache clean
 
-CMD ["yarn", "start"]
+RUN chmod +x /app/start.sh
+CMD ["/app/start.sh"]

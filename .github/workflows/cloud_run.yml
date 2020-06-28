@@ -1,0 +1,46 @@
+name: Build and Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      cloud_run
+
+env:
+  PROJECT_NAME: live-reference-run
+  RUN_NAME: live-reference
+  RUN_REGION: asia-northeast1
+  RUN_IMAGE: asia.gcr.io/live-reference-run/live-reference
+  RUN_SA_EMAIL: ${{ secrets.RUN_SA_EMAIL }}
+  RUN_SA_KEY: ${{ secrets.RUN_SA_KEY }}
+
+jobs:
+  setup-build-deploy:
+    name: Setup, Build, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.RUN_SA_EMAIL }}
+          service_account_key: ${{ env.RUN_SA_KEY }}
+          project_id: ${{ env.PROJECT_NAME }}
+
+      - name: Container Registryへのデプロイ
+        run: |
+          gcloud auth configure-docker --quiet
+          docker build -t $RUN_IMAGE:${{ github.sha }} -t $RUN_IMAGE:latest ./app
+          docker push $RUN_IMAGE
+
+      - name: Cloud Runへのデプロイ
+        run: |
+          FIREBASE_SA_KEY_BASE64=$(echo $FIREBASE_SA_KEY | openssl enc -e -base64)
+          gcloud run deploy "$RUN_NAME" \
+            --quiet \
+            --region "$RUN_REGION" \
+            --image "$RUN_IMAGE:${{ github.sha }}" \
+            --update-env-vars "FIREBASE_SA_KEY_BASE64=$FIREBASE_SA_KEY_BASE64" \
+            --service-account "$RUN_SA_EMAIL" \
+            --platform "managed" \
+            --allow-unauthenticated
