@@ -12,6 +12,7 @@ env:
   RUN_IMAGE: asia.gcr.io/live-reference-run/live-reference
   RUN_SA_EMAIL: ${{ secrets.RUN_SA_EMAIL }}
   RUN_SA_KEY: ${{ secrets.RUN_SA_KEY }}
+  FIREBASE_SA_KEY: ${{ secrets.FIREBASE_SA_KEY }}
 
 jobs:
   setup-build-deploy:
