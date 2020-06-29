@@ -3,7 +3,7 @@ name: Build and Deploy to Cloud Run
 on:
   push:
     branches:
-      cloud_run
+      master
 
 env:
   PROJECT_NAME: live-reference-run
