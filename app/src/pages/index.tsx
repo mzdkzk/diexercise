@@ -51,7 +51,7 @@ export const IndexPage: React.FC = () => {
     recognition.addEventListener('result', async e => {
       const result = e.results[e.resultIndex][0].transcript
       if (e.results[e.resultIndex].isFinal) {
-        request.post(`/api/test/${currentWordId}`, {
+        request.post(`/test/${currentWordId}`, {
           json: { text: result }
         })
         currentWordId = undefined
@@ -82,7 +82,7 @@ export const IndexPage: React.FC = () => {
   }
 
   const deleteData = () => {
-    request.delete('/api/test')
+    request.delete('/test')
   }
 
   return (

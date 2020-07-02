@@ -1,8 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiHandler } from 'next'
 import { ApiData } from '../../../scheme/api'
 import admin from '../../../utils/firebase-admin'
+import { cors } from '../../../utils/api-middleware'
 
-const handler = async (req: NextApiRequest, res: NextApiResponse<ApiData>) => {
+const handler: NextApiHandler<ApiData> = async (req, res) => {
+  await cors(req, res, { methods: ['DELETE'] })
+
   const db = admin.firestore()
   const wordsRef = db
     .collection('rooms')
