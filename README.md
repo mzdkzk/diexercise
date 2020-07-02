@@ -1,29 +1,18 @@
 # diexercise
 デザイン情報総合演習グループF1用リポジトリ
 
-## Usage
-### 1. 共通
+## 開発
 ```bash
-$ git clone https://github.com/mzdkzk/diexercise
-$ cd diexercise
-$ echo NEXT_PUBLIC_API_BASE_URL=<本番サイトのURL>/api > app/.env.local
+$ docker-compose build
+$ docker-compose up -d
 ```
 
-### 2a. nodejsを使う場合
-* `/api`以下を開発しない場合mecabが不要なのでnode.js単体でも動く
-* [node.js(v14.4以上)](https://nodejs.org/) をインストール
-```bash
-$ cd app
-$ npm install -g yarn 
-$ yarn
-$ yarn dev
-```
+### 注意
+`/api`以下の動作にはFirebaseのキーが必要です
 
-### 2b. dockerを使う場合
-* Windows10でバージョン2004適用済みならWSL2導入 + Docker Desktopのインストール
-* それ以外はVirtualBox + Docker Machineのインストール
+* プロジェクトを作成しキーを発行して`app/serviceAccountKey.json`に配置
+* もしくは`app/.env.local`を作成して代わりに本番環境の`/api`にリクエストを送る
 
 ```bash
-docker-compose build
-docker-compose up -d
+$ echo NEXT_PUBLIC_API_BASE_URL=<本番環境のURL>/api > app/.env.local
 ```
