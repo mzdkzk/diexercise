@@ -1,8 +1,8 @@
 import { NextApiHandler } from 'next'
 import Mecab from 'mecab-async'
-import { ApiData } from '../../../scheme/api'
-import admin from '../../../utils/firebase-admin'
-import { cors } from '../../../utils/api-middleware'
+import { ApiData } from '../../../../scheme/api'
+import admin from '../../../../utils/firebase-admin'
+import { cors } from '../../../../utils/api-middleware'
 
 const handler: NextApiHandler<ApiData> = async (req, res) => {
   await cors(req, res, { methods: ['POST'] })

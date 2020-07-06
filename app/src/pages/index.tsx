@@ -1,100 +1,38 @@
-import React, { useEffect, useState } from 'react'
-import { Word, Button, Layout } from '../components'
-import firebase from '../utils/firebase'
+import React, { useState } from 'react'
+import { Button, Layout } from '../components'
+import Link from 'next/link'
+import Router from 'next/router'
 import request from '../utils/request'
-import { WordData } from '../scheme/db'
+import { ApiData } from '../scheme/api'
+import { Form, Input } from '../components/forms'
 
-const getRecognition = (): SpeechRecognition | null => {
-  try {
-    const SpeechRecognition =
-      (window as any).webkitSpeechRecognition ||
-      (window as any).SpeechRecognition
-    const recognition = new SpeechRecognition()
-    recognition.lang = 'ja-JP'
-    recognition.interimResults = true
-    recognition.continuous = true
-    return recognition
-  } catch (e) {
-    return null
+const IndexPage: React.FC = () => {
+  const [ownerName, setOwnerName] = useState<string>('')
+  const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    setOwnerName(e.currentTarget.value)
   }
-}
-
-export const IndexPage: React.FC = () => {
-  const [storedWords, setStoredWords] = useState<string[]>([''])
-
-  let currentWordId: string | undefined
-  let mediaStream: MediaStream | undefined
-
-  const recognition = getRecognition()
-  const db = firebase.firestore()
-  const wordsRef = db.collection('rooms').doc('test').collection('words')
-
-  useEffect(() => {
-    const unsubscribe = wordsRef.orderBy('updatedAt').onSnapshot(snapshot => {
-      setStoredWords(snapshot.docs.map(doc => (doc.data() as WordData).text))
+  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const response = await request.post('/rooms', {
+      json: { ownerName }
     })
-    return () => {
-      stopRecord()
-      unsubscribe()
-    }
-  }, [])
-
-  const start = async () => {
-    if (!recognition) {
-      alert('このブラウザは音声入力に対応していません')
-      return
-    }
-    mediaStream = await navigator.mediaDevices.getUserMedia({
-      video: false,
-      audio: true
-    })
-    recognition.addEventListener('result', async e => {
-      const result = e.results[e.resultIndex][0].transcript
-      if (e.results[e.resultIndex].isFinal) {
-        request.post(`/test/${currentWordId}`, {
-          json: { text: result }
-        })
-        currentWordId = undefined
-      } else {
-        if (!currentWordId) {
-          currentWordId = `${+new Date()}`
-        }
-        wordsRef.doc(currentWordId).set(
-          {
-            text: result,
-            updatedAt: new Date()
-          },
-          { merge: true }
-        )
-      }
-    })
-    recognition.start()
+    const responseJson: ApiData = await response.json()
+    Router.push('/rooms/[roomId]', `/rooms/${responseJson.body!.roomId}`)
   }
-
-  const stopRecord = () => {
-    if (recognition) {
-      recognition.stop()
-    }
-    if (mediaStream) {
-      mediaStream.getTracks().forEach(track => track.stop())
-      mediaStream = undefined
-    }
-  }
-
-  const deleteData = () => {
-    request.delete('/test')
-  }
-
   return (
     <Layout>
-      <Button onClick={start}>Start</Button>
-      <Button onClick={stopRecord}>Stop</Button>
-      <Button onClick={deleteData}>Delete</Button>
-      <div>
-        {storedWords.map((word, i) => (
-          <Word key={i}>{word}</Word>
-        ))}
-      </div>
+      <h1>Live※Reference</h1>
+      <Form onSubmit={onSubmitHandler}>
+        <Input
+          onChange={onChangeHandler}
+          placeholder="ユーザー名を入力してルームを作成"
+          required
+        />
+        <Button type="submit">作成</Button>
+      </Form>
+      <Link href="/rooms/[roomId]" as="/rooms/test">
+        <a>テスト用ルーム</a>
+      </Link>
     </Layout>
   )
 }
