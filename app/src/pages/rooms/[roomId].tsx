@@ -53,7 +53,7 @@ const IndexPage: React.FC<{ router: NextRouter }> = ({ router }) => {
     recognition.addEventListener('result', async e => {
       const result = e.results[e.resultIndex][0].transcript
       if (e.results[e.resultIndex].isFinal) {
-        request.post(`/rooms/${roomId}/${currentWordId}`, {
+        request.post(`/api/rooms/${roomId}/${currentWordId}`, {
           json: { text: result }
         })
         currentWordId = undefined
@@ -84,7 +84,7 @@ const IndexPage: React.FC<{ router: NextRouter }> = ({ router }) => {
   }
 
   const deleteData = () => {
-    request.delete(`/rooms/${roomId}`)
+    request.delete(`/api/rooms/${roomId}`)
   }
 
   return (

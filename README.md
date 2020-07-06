@@ -5,7 +5,7 @@
 `/api`以下の動作にはFirebaseの認証鍵が必要なので、代わりに本番環境のものを使ってください
 
 ```bash
-$ echo NEXT_PUBLIC_API_BASE_URL={本番環境のURL}/api > app/.env.local
+$ echo NEXT_PUBLIC_API_BASE_URL={本番環境のURL} > app/.env.local
 $ docker-compose build
 $ docker-compose up -d
 ```

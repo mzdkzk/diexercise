@@ -13,7 +13,7 @@ const IndexPage: React.FC = () => {
   }
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const response = await request.post('/rooms', {
+    const response = await request.post('/api/rooms', {
       json: { ownerName }
     })
     const responseJson: ApiData = await response.json()
