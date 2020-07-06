@@ -11,6 +11,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   border: solid 0.5rem ${colors.primary};
+  padding: 0.5rem;
   box-sizing: border-box;
 `
 

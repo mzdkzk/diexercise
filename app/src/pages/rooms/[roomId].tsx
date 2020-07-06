@@ -88,7 +88,7 @@ const IndexPage: React.FC<{ router: NextRouter }> = ({ router }) => {
   }
 
   return (
-    <Layout>
+    <Layout title={`ルーム[ID: ${roomId}]`}>
       <Button onClick={start}>Start</Button>
       <Button onClick={stopRecord}>Stop</Button>
       <Button onClick={deleteData}>Delete</Button>
