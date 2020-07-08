@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, NextRouter } from 'next/router'
-import { Word, Button, Layout } from '../../components'
+import { Word, Button } from '../../components'
 import firebase from '../../utils/firebase'
 import request from '../../utils/request'
 import { WordData } from '../../scheme/db'
+import {
+  Layout,
+  LeftBox,
+  RightBottomBox,
+  RightTopBox
+} from '../../components/layouts'
 
 const getRecognition = (): SpeechRecognition | null => {
   try {
@@ -89,14 +95,19 @@ const IndexPage: React.FC<{ router: NextRouter }> = ({ router }) => {
 
   return (
     <Layout title={`ルーム[ID: ${roomId}]`}>
-      <Button onClick={start}>Start</Button>
-      <Button onClick={stopRecord}>Stop</Button>
-      <Button onClick={deleteData}>Delete</Button>
-      <div>
-        {storedWords.map((word, i) => (
-          <Word key={i}>{word}</Word>
-        ))}
-      </div>
+      <LeftBox>
+        <div>
+          {storedWords.map((word, i) => (
+            <Word key={i}>{word}</Word>
+          ))}
+        </div>
+      </LeftBox>
+      <RightTopBox></RightTopBox>
+      <RightBottomBox>
+        <Button onClick={start}>Start</Button>
+        <Button onClick={stopRecord}>Stop</Button>
+        <Button onClick={deleteData}>Delete</Button>
+      </RightBottomBox>
     </Layout>
   )
 }

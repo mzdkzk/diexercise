@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Button, Layout } from '../components'
+import { Button } from '../components'
 import Link from 'next/link'
 import Router from 'next/router'
 import request from '../utils/request'
 import { ApiData } from '../scheme/api'
 import { Form, Input } from '../components/forms'
+import { Layout } from '../components/layouts'
 
 const IndexPage: React.FC = () => {
   const [ownerName, setOwnerName] = useState<string>('')
