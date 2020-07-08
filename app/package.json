@@ -8,8 +8,8 @@
     "lint": "eslint src/** --fix"
   },
   "dependencies": {
-    "cors": "^2.8.5",
     "@types/cors": "^2.8.6",
+    "cors": "^2.8.5",
     "firebase": "^7.15.4",
     "firebase-admin": "^8.12.1",
     "isomorphic-unfetch": "^3.0.0",
@@ -17,6 +17,7 @@
     "next": "latest",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-string-replace": "^0.4.4",
     "styled-components": "^5.0.0"
   },
   "devDependencies": {
