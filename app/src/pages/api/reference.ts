@@ -4,7 +4,6 @@ import { cors } from '../../utils/api-middleware'
 import request from '../../utils/request'
 
 type Response = {
-  url: string
   body: string
 }
 
@@ -15,7 +14,7 @@ const handler: NextApiHandler<ApiData> = async (req, res) => {
   const response = await request.get(url)
   const responseJson: Response[] = await response.json()
   if (responseJson) {
-    res.json({ isSuccess: true, body: responseJson[0] })
+    res.json({ isSuccess: true, body: { text: responseJson[0].body } })
   } else {
     res.json({ isSuccess: true })
   }

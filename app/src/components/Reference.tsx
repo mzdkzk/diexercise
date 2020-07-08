@@ -5,20 +5,17 @@ type Props = {
   word: string
 }
 
-type ReferenceData = {
-  body: string
-  url: string
-}
-
 const Reference: React.FC<Props> = ({ word }) => {
-  const [reference, setReference] = useState<ReferenceData | null>(null)
+  const [reference, setReference] = useState<string>('')
 
   useEffect(() => {
     if (word === '') return
     const search = async () => {
       const response = await request.get(`/api/reference?word=${word}`)
       const responseJson = await response.json()
-      setReference(responseJson.body || null)
+      if (responseJson.body) {
+        setReference(responseJson.body.text)
+      }
     }
     search()
   }, [word])
@@ -26,10 +23,13 @@ const Reference: React.FC<Props> = ({ word }) => {
   return (
     <div>
       <p>{word}</p>
-      <p>{reference && reference.body}</p>
+      <p>{reference}</p>
       <p>
-        {reference ? (
-          <a target="_blank" rel="noreferrer" href={reference.url}>
+        {word ? (
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href={`https://www.google.com/search?q=${word}`}>
             Google検索へ
           </a>
         ) : (
