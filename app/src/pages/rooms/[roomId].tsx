@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { withRouter, NextRouter } from 'next/router'
 import { Word, Button } from '../../components'
 import firebase from '../../utils/firebase'
 import request from '../../utils/request'
@@ -10,6 +9,9 @@ import {
   RightBottomBox,
   RightTopBox
 } from '../../components/layouts'
+import reactStringReplace from 'react-string-replace'
+import Reference from '../../components/Reference'
+import { GetServerSideProps } from 'next'
 
 const getRecognition = (): SpeechRecognition | null => {
   try {
@@ -26,9 +28,9 @@ const getRecognition = (): SpeechRecognition | null => {
   }
 }
 
-const IndexPage: React.FC<{ router: NextRouter }> = ({ router }) => {
+const RoomPage: React.FC<{ roomId: string }> = ({ roomId }) => {
   const [storedWords, setStoredWords] = useState<string[]>([''])
-  const { roomId } = router.query
+  const [refWord, setRefWord] = useState<string>('')
 
   let currentWordId: string | undefined
   let mediaStream: MediaStream | undefined
@@ -97,12 +99,23 @@ const IndexPage: React.FC<{ router: NextRouter }> = ({ router }) => {
     <Layout title={`ルーム[ID: ${roomId}]`}>
       <LeftBox>
         <div>
-          {storedWords.map((word, i) => (
-            <Word key={i}>{word}</Word>
-          ))}
+          {storedWords.map((word, i) => {
+            const children = reactStringReplace(
+              word,
+              /\[(.+?)\]/g,
+              (match, i) => (
+                <a href="#" key={i} onClick={() => setRefWord(match)}>
+                  {match}
+                </a>
+              )
+            )
+            return <Word key={i}>{children}</Word>
+          })}
         </div>
       </LeftBox>
-      <RightTopBox></RightTopBox>
+      <RightTopBox>
+        <Reference word={refWord} />
+      </RightTopBox>
       <RightBottomBox>
         <Button onClick={start}>Start</Button>
         <Button onClick={stopRecord}>Stop</Button>
@@ -112,4 +125,10 @@ const IndexPage: React.FC<{ router: NextRouter }> = ({ router }) => {
   )
 }
 
-export default withRouter(IndexPage)
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const roomId = `${params!.roomId}`
+  return {
+    props: { roomId }
+  }
+}
+export default RoomPage

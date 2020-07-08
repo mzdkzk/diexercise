@@ -9,7 +9,7 @@ type Fetcher = (input: string, init: JSONRequestInit) => Promise<Response>
 type Request = (input: string, init?: JSONRequestInit) => Promise<Response>
 
 const fetcher: Fetcher = async (input, init) => {
-  input = `${process.env.NEXT_PUBLIC_API_BASE_URL || ''}${input}`
+  input = encodeURI(`${process.env.NEXT_PUBLIC_API_BASE_URL || ''}${input}`)
   init.headers = Object.assign(init.headers || {}, {
     'Content-Type': 'application/json'
   })
