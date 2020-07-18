@@ -119,9 +119,15 @@ const RoomPage: React.FC<{ roomId: string }> = ({ roomId }) => {
         </LeftTopBox>
         <LeftBottomBox>
           <ControlContainer>
-            <ControlButton>A</ControlButton>
-            <ControlButton>B</ControlButton>
-            <ControlButton>C</ControlButton>
+            <ControlButton>
+              <img src="/menu.svg" />
+            </ControlButton>
+            <ControlButton>
+              <img src="/microphone.svg" />
+            </ControlButton>
+            <ControlButton>
+              <img src="/members.svg" />
+            </ControlButton>
           </ControlContainer>
         </LeftBottomBox>
         <RightTopBox>

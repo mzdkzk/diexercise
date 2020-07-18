@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Button from './Button'
 
 export const ControlContainer = styled.div`
   display: flex;
@@ -9,6 +8,13 @@ export const ControlContainer = styled.div`
   height: 100%;
 `
 
-export const ControlButton = styled(Button)`
+export const ControlButton = styled.button`
   background-color: transparent;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `

@@ -3,10 +3,6 @@ import Head from 'next/head'
 import styled from 'styled-components'
 import colors from '../config/colors'
 
-type Props = {
-  title?: string
-}
-
 export const GridContainer = styled.div`
   // https://stackoverflow.com/questions/44488357/equal-height-rows-in-css-grid-layout
   display: grid;
@@ -16,30 +12,41 @@ export const GridContainer = styled.div`
   height: 100%;
 `
 
-const Box = styled.div`
-  border: solid 0.5rem ${colors.primary};
+const LeftBox = styled.div`
   box-sizing: border-box;
 `
 
-export const LeftTopBox = styled(Box)`
+const RightBox = styled.div`
+  box-sizing: border-box;
+  border: solid 0.5rem ${colors.borders.right};
+  border-radius: 1rem;
+`
+
+export const LeftTopBox = styled(LeftBox)`
+  border-top: solid 1rem ${colors.borders.left};
   grid-column: 1 / 2;
   grid-row: 1 / 7;
 `
 
-export const LeftBottomBox = styled(Box)`
+export const LeftBottomBox = styled(LeftBox)`
+  background-color: ${colors.borders.left};
   grid-column: 1 / 2;
   grid-row: 7 / 8;
 `
 
-export const RightTopBox = styled(Box)`
+export const RightTopBox = styled(RightBox)`
   grid-column: 2 / 3;
   grid-row: 1 / 2;
 `
 
-export const RightBottomBox = styled(Box)`
+export const RightBottomBox = styled(RightBox)`
   grid-column: 2 / 3;
   grid-row: 2 / 8;
 `
+
+type Props = {
+  title?: string
+}
 
 export const Layout: React.FC<Props> = ({ children, title }) => (
   <>
