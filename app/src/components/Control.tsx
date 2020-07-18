@@ -52,13 +52,16 @@ const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
         })
       } else {
         wordId = wordId || `${+new Date()}`
-        await wordsRef.doc(wordId).set(
-          {
-            text: result,
-            updatedAt: new Date()
-          },
-          { merge: true }
-        )
+        // Firestoreへの書き込み数削減のために奇数文字ずつDBに適用
+        if (result.length % 2 === 1) {
+          await wordsRef.doc(wordId).set(
+            {
+              text: result,
+              updatedAt: new Date()
+            },
+            { merge: true }
+          )
+        }
       }
     }
     recognition.addEventListener('result', onResult)
