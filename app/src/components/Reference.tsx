@@ -24,18 +24,6 @@ const Reference: React.FC<Props> = ({ word }) => {
     <div>
       <p>{word}</p>
       <p>{reference}</p>
-      <p>
-        {word ? (
-          <a
-            target="_blank"
-            rel="noreferrer"
-            href={`https://www.google.com/search?q=${word}`}>
-            Google検索へ
-          </a>
-        ) : (
-          ''
-        )}
-      </p>
     </div>
   )
 }
