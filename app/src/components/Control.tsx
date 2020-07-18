@@ -19,41 +19,40 @@ const getRecognition = (): SpeechRecognition | null => {
 }
 
 const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
-  const recognition = getRecognition()
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
   const [isRecording, setIsRecording] = useState<boolean>(false)
-
-  let currentWordId: string | undefined
-  let mediaStream: MediaStream | undefined
 
   const db = firebase.firestore()
   const wordsRef = db.collection('rooms').doc(roomId).collection('words')
 
   // アンマウント時に音声入力を停止
   useEffect(() => {
+    const recognition = getRecognition()
+    if (!recognition) {
+      alert('このブラウザは音声入力に対応していません')
+      return
+    } else {
+      setRecognition(recognition)
+    }
     return () => stopRecord()
   }, [])
 
-  const startRecord = async () => {
+  let wordId: string | undefined
+
+  const startRecord = () => {
     if (!recognition) {
       alert('このブラウザは音声入力に対応していません')
       return
     }
-    mediaStream = await navigator.mediaDevices.getUserMedia({
-      video: false,
-      audio: true
-    })
-    recognition.addEventListener('result', async e => {
+    const onResult = async (e: SpeechRecognitionEvent) => {
       const result = e.results[e.resultIndex][0].transcript
       if (e.results[e.resultIndex].isFinal) {
-        await request.post(`/api/rooms/${roomId}/${currentWordId}`, {
+        await request.post(`/api/rooms/${roomId}/${wordId}`, {
           json: { text: result }
         })
-        currentWordId = undefined
       } else {
-        if (!currentWordId) {
-          currentWordId = `${+new Date()}`
-        }
-        await wordsRef.doc(currentWordId).set(
+        wordId = wordId || `${+new Date()}`
+        await wordsRef.doc(wordId).set(
           {
             text: result,
             updatedAt: new Date()
@@ -61,7 +60,8 @@ const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
           { merge: true }
         )
       }
-    })
+    }
+    recognition.addEventListener('result', onResult)
     recognition.start()
     setIsRecording(true)
   }
@@ -69,10 +69,6 @@ const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
   const stopRecord = () => {
     if (recognition) {
       recognition.stop()
-    }
-    if (mediaStream) {
-      mediaStream.getTracks().forEach(track => track.stop())
-      mediaStream = undefined
     }
     setIsRecording(false)
   }
@@ -85,7 +81,11 @@ const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
       <ControlButton
         isPressed={isRecording}
         onClick={() => {
-          isRecording ? stopRecord() : startRecord()
+          if (isRecording) {
+            stopRecord()
+          } else {
+            startRecord()
+          }
         }}>
         <img src="/microphone.svg" />
       </ControlButton>
