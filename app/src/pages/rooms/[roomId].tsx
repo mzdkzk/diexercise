@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Word, Button } from '../../components'
+import { Word } from '../../components'
 import firebase from '../../utils/firebase'
 import request from '../../utils/request'
 import { WordData } from '../../scheme/db'
@@ -120,23 +120,31 @@ const RoomPage: React.FC<{ roomId: string }> = ({ roomId }) => {
         <LeftBottomBox>
           <ControlContainer>
             <ControlButton>
-              <img src="/menu.svg" />
+              <img onClick={stopRecord} src="/menu.svg" />
             </ControlButton>
             <ControlButton>
-              <img src="/microphone.svg" />
+              <img onClick={start} src="/microphone.svg" />
             </ControlButton>
             <ControlButton>
-              <img src="/members.svg" />
+              <img onClick={deleteData} src="/members.svg" />
             </ControlButton>
           </ControlContainer>
         </LeftBottomBox>
         <RightTopBox>
-          <Reference word={refWord} />
+          {refWord}
+          {refWord ? (
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`https://www.google.com/search?q=${refWord}`}>
+              Google検索へ
+            </a>
+          ) : (
+            ''
+          )}
         </RightTopBox>
         <RightBottomBox>
-          <Button onClick={start}>Start</Button>
-          <Button onClick={stopRecord}>Stop</Button>
-          <Button onClick={deleteData}>Delete</Button>
+          <Reference word={refWord} />
         </RightBottomBox>
       </GridContainer>
     </Layout>
@@ -149,4 +157,5 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     props: { roomId }
   }
 }
+
 export default RoomPage

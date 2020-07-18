@@ -10,14 +10,18 @@ export const GridContainer = styled.div`
   grid-auto-rows: 1fr;
   width: 100%;
   height: 100%;
+  background-color: ${colors.borders.right}; // RightBoxの丸角を埋めるため
 `
 
-const LeftBox = styled.div`
+const Box = styled.div`
+  padding: 2rem;
   box-sizing: border-box;
+  background-color: white;
 `
 
-const RightBox = styled.div`
-  box-sizing: border-box;
+const LeftBox = styled(Box)``
+
+const RightBox = styled(Box)`
   border: solid 0.5rem ${colors.borders.right};
   border-radius: 1rem;
 `
