@@ -4,14 +4,17 @@ import firebase from '../../utils/firebase'
 import request from '../../utils/request'
 import { WordData } from '../../scheme/db'
 import {
+  GridContainer,
   Layout,
-  LeftBox,
+  LeftBottomBox,
+  LeftTopBox,
   RightBottomBox,
   RightTopBox
 } from '../../components/layouts'
 import reactStringReplace from 'react-string-replace'
 import Reference from '../../components/Reference'
 import { GetServerSideProps } from 'next'
+import { ControlButton, ControlContainer } from '../../components/controls'
 
 const getRecognition = (): SpeechRecognition | null => {
   try {
@@ -97,30 +100,39 @@ const RoomPage: React.FC<{ roomId: string }> = ({ roomId }) => {
 
   return (
     <Layout title={`ルーム[ID: ${roomId}]`}>
-      <LeftBox>
-        <div>
-          {storedWords.map((word, i) => {
-            const children = reactStringReplace(
-              word,
-              /\[(.+?)\]/g,
-              (match, i) => (
-                <a href="#" key={i} onClick={() => setRefWord(match)}>
-                  {match}
-                </a>
+      <GridContainer>
+        <LeftTopBox>
+          <div>
+            {storedWords.map((word, i) => {
+              const children = reactStringReplace(
+                word,
+                /\[(.+?)\]/g,
+                (match, i) => (
+                  <a href="#" key={i} onClick={() => setRefWord(match)}>
+                    {match}
+                  </a>
+                )
               )
-            )
-            return <Word key={i}>{children}</Word>
-          })}
-        </div>
-      </LeftBox>
-      <RightTopBox>
-        <Reference word={refWord} />
-      </RightTopBox>
-      <RightBottomBox>
-        <Button onClick={start}>Start</Button>
-        <Button onClick={stopRecord}>Stop</Button>
-        <Button onClick={deleteData}>Delete</Button>
-      </RightBottomBox>
+              return <Word key={i}>{children}</Word>
+            })}
+          </div>
+        </LeftTopBox>
+        <LeftBottomBox>
+          <ControlContainer>
+            <ControlButton>A</ControlButton>
+            <ControlButton>B</ControlButton>
+            <ControlButton>C</ControlButton>
+          </ControlContainer>
+        </LeftBottomBox>
+        <RightTopBox>
+          <Reference word={refWord} />
+        </RightTopBox>
+        <RightBottomBox>
+          <Button onClick={start}>Start</Button>
+          <Button onClick={stopRecord}>Stop</Button>
+          <Button onClick={deleteData}>Delete</Button>
+        </RightBottomBox>
+      </GridContainer>
     </Layout>
   )
 }
