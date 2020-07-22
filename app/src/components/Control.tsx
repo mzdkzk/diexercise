@@ -27,19 +27,13 @@ const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
 
   // アンマウント時に音声入力を停止
   useEffect(() => {
-    const recognition = getRecognition()
-    if (!recognition) {
-      alert('このブラウザは音声入力に対応していません')
-      return
-    } else {
-      setRecognition(recognition)
-    }
     return () => stopRecord()
   }, [])
 
   let wordId: string | undefined
 
   const startRecord = () => {
+    const recognition = getRecognition()
     if (!recognition) {
       alert('このブラウザは音声入力に対応していません')
       return
@@ -50,6 +44,7 @@ const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
         await request.post(`/api/rooms/${roomId}/${wordId}`, {
           json: { text: result }
         })
+        wordId = undefined
       } else {
         wordId = wordId || `${+new Date()}`
         // Firestoreへの書き込み数削減のために奇数文字ずつDBに適用
@@ -66,6 +61,7 @@ const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
     }
     recognition.addEventListener('result', onResult)
     recognition.start()
+    setRecognition(recognition)
     setIsRecording(true)
   }
 
