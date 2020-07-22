@@ -1,15 +1,21 @@
 import { useState } from 'react'
 
 // https://usehooks.com/useLocalStorage/
-export const useLocalStorage = <T>(key: string, initialValue: T) => {
+export const useLocalStorage = <T>(
+  key: string,
+  defaultValue: T
+): [T, (value: T) => void] => {
   const [storedValue, setStoredValue] = useState<T>(() => {
-    const item = window.localStorage.getItem(key)
-    return item ? JSON.parse(item) : initialValue
+    if (typeof localStorage !== 'undefined') {
+      const item = localStorage.getItem(key)
+      return item ? JSON.parse(item) : defaultValue
+    }
+    return defaultValue
   })
 
   const setValue = (value: T) => {
     setStoredValue(value)
-    window.localStorage.setItem(key, JSON.stringify(value))
+    localStorage.setItem(key, JSON.stringify(value))
   }
 
   return [storedValue, setValue]

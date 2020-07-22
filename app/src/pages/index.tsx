@@ -1,44 +1,59 @@
 import React, { useState } from 'react'
 import { Button } from '../components'
-import Link from 'next/link'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import request from '../utils/request'
 import { ApiData } from '../scheme/api'
 import { Form, Input } from '../components/forms'
 import { Layout } from '../components/layouts'
 import { PageFC } from '../scheme/pages'
 import firebase from '../utils/firebase'
+import { useLocalStorage } from '../utils/storage'
+import { UserStorage } from '../scheme/storage'
 
 const IndexPage: PageFC = () => {
-  const [ownerName, setOwnerName] = useState<string>('')
+  const [userStorage, setUserStorage] = useLocalStorage<UserStorage>(
+    'live-reference.user',
+    { name: '' }
+  )
   const [isLoading, setLoading] = useState<boolean>(false)
+  const router = useRouter()
+  const { roomId } = router.query
+
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    setOwnerName(e.currentTarget.value)
+    setUserStorage({ name: e.currentTarget.value })
   }
+
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
-    const credential = await firebase.auth().signInAnonymously()
-    const response = await request.post('/api/rooms', {
-      json: { ownerName, uid: credential.user!.uid }
-    })
-    const responseJson: ApiData = await response.json()
-    Router.push('/rooms/[roomId]', `/rooms/${responseJson.body!.roomId}`)
+    if (!roomId) {
+      const credential = await firebase.auth().signInAnonymously()
+      const response = await request.post('/api/rooms', {
+        json: { ownerName: userStorage, uid: credential.user!.uid }
+      })
+      const responseJson: ApiData = await response.json()
+      Router.push('/rooms/[roomId]', `/rooms/${responseJson.body!.roomId}`)
+    } else {
+      Router.push('/rooms/[roomId]', `/rooms/${roomId}`)
+    }
   }
+
   return (
     <Layout>
       <h1>Live※Reference</h1>
       <Form onSubmit={onSubmitHandler}>
         <Input
           onChange={onChangeHandler}
-          placeholder="ユーザー名を入力してルームを作成"
+          value={userStorage.name}
+          placeholder="ユーザー名を入力"
           required
         />
-        <Button type="submit">{isLoading ? '作成中...' : '作成'}</Button>
+        <Button type="submit">
+          {'ルーム'}
+          {roomId ? 'に入室' : 'を作成'}
+          {isLoading ? '中...' : ''}
+        </Button>
       </Form>
-      <Link href="/rooms/[roomId]" as="/rooms/test">
-        <a>テスト用ルーム</a>
-      </Link>
     </Layout>
   )
 }
