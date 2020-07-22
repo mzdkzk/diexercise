@@ -41,6 +41,12 @@ export default class MyDocument extends Document {
           <meta charSet="UTF-8" />
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           <meta name="viewport" content="width=device-width,initial-scale=1" />
+          <link
+            rel="apple-touch-icon"
+            type="image/png"
+            href="/icons/apple-180x180.png"
+          />
+          <link rel="icon" type="image/png" href="/icons/icon-192x192.png" />
         </Head>
         <body>
           <Main />
