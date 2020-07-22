@@ -18,10 +18,10 @@ const IndexPage: PageFC = () => {
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
+    const credential = await firebase.auth().signInAnonymously()
     const response = await request.post('/api/rooms', {
-      json: { ownerName }
+      json: { ownerName, uid: credential.user!.uid }
     })
-    await firebase.auth().signInAnonymously()
     const responseJson: ApiData = await response.json()
     Router.push('/rooms/[roomId]', `/rooms/${responseJson.body!.roomId}`)
   }
