@@ -6,8 +6,9 @@ import request from '../utils/request'
 import { ApiData } from '../scheme/api'
 import { Form, Input } from '../components/forms'
 import { Layout } from '../components/layouts'
+import { PageFC } from '../scheme/pages'
 
-const IndexPage: React.FC = () => {
+const IndexPage: PageFC = () => {
   const [ownerName, setOwnerName] = useState<string>('')
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setOwnerName(e.currentTarget.value)

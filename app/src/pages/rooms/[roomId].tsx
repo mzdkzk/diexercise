@@ -14,8 +14,9 @@ import reactStringReplace from 'react-string-replace'
 import Reference from '../../components/Reference'
 import { GetServerSideProps } from 'next'
 import Control from '../../components/Control'
+import { PageFC } from '../../scheme/pages'
 
-const RoomPage: React.FC<{ roomId: string }> = ({ roomId }) => {
+const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
   const [storedWords, setStoredWords] = useState<string[]>([''])
   const [refWord, setRefWord] = useState<string>('')
 
