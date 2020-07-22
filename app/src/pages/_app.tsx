@@ -1,8 +1,14 @@
 import React from 'react'
 import colors from '../config/colors'
 import { AppProps } from 'next/app'
+import firebase from '../utils/firebase'
 
 const App = ({ Component, pageProps }: AppProps) => {
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      pageProps.user = user
+    }
+  })
   return (
     <>
       <style global jsx>{`
