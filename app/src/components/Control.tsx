@@ -20,7 +20,6 @@ const getRecognition = (): SpeechRecognition | null => {
 
 const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
-  const [isRecording, setIsRecording] = useState<boolean>(false)
 
   const db = firebase.firestore()
   const wordsRef = db.collection('rooms').doc(roomId).collection('words')
@@ -62,16 +61,16 @@ const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
     recognition.addEventListener('result', onResult)
     recognition.start()
     setRecognition(recognition)
-    setIsRecording(true)
   }
 
   const stopRecord = () => {
     if (recognition) {
       recognition.stop()
     }
-    setIsRecording(false)
+    setRecognition(null)
   }
 
+  const isRecording = recognition !== null
   return (
     <ControlContainer>
       <ControlButton>
