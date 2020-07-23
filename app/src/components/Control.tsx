@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import request from '../utils/request'
 import { ControlButton, ControlContainer } from './controls'
 import firebase from '../utils/firebase'
+import { UserStorage } from '../scheme/storage'
 
 const getRecognition = (): SpeechRecognition | null => {
   try {
@@ -18,7 +19,12 @@ const getRecognition = (): SpeechRecognition | null => {
   }
 }
 
-const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
+type Props = {
+  roomId: string
+  user: UserStorage
+}
+
+const Control: React.FC<Props> = ({ roomId, user }) => {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
 
   const db = firebase.firestore()
@@ -38,23 +44,19 @@ const Control: React.FC<{ roomId: string }> = ({ roomId }) => {
       return
     }
     const onResult = async (e: SpeechRecognitionEvent) => {
-      const result = e.results[e.resultIndex][0].transcript
+      const text = e.results[e.resultIndex][0].transcript
       if (e.results[e.resultIndex].isFinal) {
         await request.post(`/api/rooms/${roomId}/${wordId}`, {
-          json: { text: result }
+          json: { text }
         })
         wordId = undefined
       } else {
         wordId = wordId || `${+new Date()}`
         // Firestoreへの書き込み数削減のために奇数文字ずつDBに適用
-        if (result.length % 2 === 1) {
-          await wordsRef.doc(wordId).set(
-            {
-              text: result,
-              updatedAt: new Date()
-            },
-            { merge: true }
-          )
+        if (text.length % 2 === 1) {
+          await wordsRef
+            .doc(wordId)
+            .set({ user, text, updatedAt: new Date() }, { merge: true })
         }
       }
     }

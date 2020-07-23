@@ -15,8 +15,11 @@ import Reference from '../../components/Reference'
 import { GetServerSideProps } from 'next'
 import Control from '../../components/Control'
 import { PageFC } from '../../scheme/pages'
+import { useLocalStorage } from '../../utils/storage'
+import { UserStorage } from '../../scheme/storage'
 
 const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
+  const [userStorage] = useLocalStorage<UserStorage>('live-reference.user')
   const [storedWords, setStoredWords] = useState<string[]>([''])
   const [refWord, setRefWord] = useState<string>('')
 
@@ -27,9 +30,7 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
     const unsubscribe = wordsRef.orderBy('updatedAt').onSnapshot(snapshot => {
       setStoredWords(snapshot.docs.map(doc => (doc.data() as WordData).text))
     })
-    return () => {
-      unsubscribe()
-    }
+    return () => unsubscribe()
   }, [])
 
   return (
@@ -52,7 +53,7 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
           </div>
         </LeftTopBox>
         <LeftBottomBox>
-          <Control roomId={roomId} />
+          <Control roomId={roomId} user={userStorage} />
         </LeftBottomBox>
         <RightTopBox>
           {refWord}

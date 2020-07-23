@@ -3,7 +3,7 @@ import { useState } from 'react'
 // https://usehooks.com/useLocalStorage/
 export const useLocalStorage = <T>(
   key: string,
-  defaultValue: T
+  defaultValue?: T
 ): [T, (value: T) => void] => {
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof localStorage !== 'undefined') {
