@@ -27,7 +27,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           height: 100%;
         }
         body {
-          color: ${colors.primary};
+          color: ${colors.text};
           font-size: 18px;
           line-height: 20px;
           background-color: ${colors.background};
