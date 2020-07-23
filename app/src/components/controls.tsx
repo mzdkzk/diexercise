@@ -11,7 +11,7 @@ export const ControlContainer = styled.div`
 
 export const ControlButton = styled.button<{ isPressed?: boolean }>`
   background-color: ${({ isPressed }) =>
-    isPressed ? colors.buttons.pressed : colors.buttons.normal};
+    isPressed ? colors.controls.pressed : colors.controls.default};
   width: 4rem;
   height: 4rem;
   cursor: pointer;

@@ -3,12 +3,32 @@ import { Button } from '../components'
 import Router, { useRouter } from 'next/router'
 import request from '../utils/request'
 import { ApiData } from '../scheme/api'
-import { Form, Input } from '../components/forms'
+import { Input } from '../components/forms'
 import { Layout } from '../components/layouts'
 import { PageFC } from '../scheme/pages'
 import firebase from '../utils/firebase'
 import { useLocalStorage } from '../utils/storage'
 import { UserStorage } from '../scheme/storage'
+import styled from 'styled-components'
+
+const Title = styled.h1`
+  margin-top: 10rem;
+  font-size: 3rem;
+  line-height: 3rem;
+`
+
+const NameInput = styled(Input)`
+  min-width: 30rem;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  margin-top: 3rem;
+`
+
+const NameButton = styled(Button)`
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  margin-top: 2rem;
+`
 
 const IndexPage: PageFC = () => {
   const [userStorage, setUserStorage] = useLocalStorage<UserStorage>(
@@ -40,20 +60,21 @@ const IndexPage: PageFC = () => {
 
   return (
     <Layout>
-      <h1>Live※Reference</h1>
-      <Form onSubmit={onSubmitHandler}>
-        <Input
+      <Title>Live※Reference</Title>
+      <form onSubmit={onSubmitHandler}>
+        <NameInput
           onChange={onChangeHandler}
           value={userStorage.name}
           placeholder="ユーザー名を入力"
           required
         />
-        <Button type="submit">
+        <br />
+        <NameButton type="submit">
           {'ルーム'}
           {roomId ? 'に入室' : 'を作成'}
           {isLoading ? '中...' : ''}
-        </Button>
-      </Form>
+        </NameButton>
+      </form>
     </Layout>
   )
 }
