@@ -20,13 +20,9 @@ const App = ({ Component, pageProps }: AppProps) => {
           text-align: center;
           font-family: inherit;
         }
-        html,
-        body,
-        #__next {
+        body {
           width: 100%;
           height: 100%;
-        }
-        body {
           color: ${colors.text};
           font-size: 18px;
           line-height: 20px;

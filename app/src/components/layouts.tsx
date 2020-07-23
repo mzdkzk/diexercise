@@ -8,8 +8,8 @@ export const GridContainer = styled.div`
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-rows: 1fr;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: ${colors.borders.right}; // RightBoxの丸角を埋めるため
 `
 
