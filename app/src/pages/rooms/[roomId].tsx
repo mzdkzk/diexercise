@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { Word } from '../../components'
+import React, { useContext, useEffect, useState } from 'react'
 import firebase from '../../utils/firebase'
 import { WordData } from '../../scheme/db'
 import {
@@ -10,25 +9,26 @@ import {
   RightBottomBox,
   RightTopBox
 } from '../../components/layouts'
-import reactStringReplace from 'react-string-replace'
 import Reference from '../../components/Reference'
 import { GetServerSideProps } from 'next'
 import Control from '../../components/Control'
 import { PageFC } from '../../scheme/pages'
 import { useLocalStorage } from '../../utils/storage'
 import { UserStorage } from '../../scheme/storage'
+import Caption from '../../components/Caption'
+import { RefWordContext } from '../../utils/context'
 
 const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
   const [userStorage] = useLocalStorage<UserStorage>('live-reference.user')
-  const [storedWords, setStoredWords] = useState<string[]>([''])
-  const [refWord, setRefWord] = useState<string>('')
+  const [storedWords, setStoredWords] = useState<WordData[]>([])
+  const refWord = useContext(RefWordContext)
 
   const db = firebase.firestore()
   const wordsRef = db.collection('rooms').doc(`${roomId}`).collection('words')
 
   useEffect(() => {
     const unsubscribe = wordsRef.orderBy('updatedAt').onSnapshot(snapshot => {
-      setStoredWords(snapshot.docs.map(doc => (doc.data() as WordData).text))
+      setStoredWords(snapshot.docs.map(doc => doc.data() as WordData))
     })
     return () => unsubscribe()
   }, [])
@@ -37,20 +37,7 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
     <Layout title={`ルーム[ID: ${roomId}]`}>
       <GridContainer>
         <LeftTopBox>
-          <div>
-            {storedWords.map((word, i) => {
-              const children = reactStringReplace(
-                word,
-                /\[(.+?)\]/g,
-                (match, i) => (
-                  <a href="#" key={i} onClick={() => setRefWord(match)}>
-                    {match}
-                  </a>
-                )
-              )
-              return <Word key={i}>{children}</Word>
-            })}
-          </div>
+          <Caption words={storedWords} />
         </LeftTopBox>
         <LeftBottomBox>
           <Control roomId={roomId} user={userStorage} />
