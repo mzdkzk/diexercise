@@ -49,7 +49,7 @@ const IndexPage: PageFC = () => {
     if (!roomId) {
       const credential = await firebase.auth().signInAnonymously()
       const response = await request.post('/api/rooms', {
-        json: { ownerName: userStorage, uid: credential.user!.uid }
+        json: { owner: userStorage, uid: credential.user!.uid }
       })
       const responseJson: ApiData = await response.json()
       Router.push('/rooms/[roomId]', `/rooms/${responseJson.body!.roomId}`)
