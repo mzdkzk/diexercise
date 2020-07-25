@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import firebase from '../../utils/firebase'
 import { WordData } from '../../scheme/db'
 import {
@@ -16,12 +16,11 @@ import { PageFC } from '../../scheme/pages'
 import { useLocalStorage } from '../../utils/storage'
 import { UserStorage } from '../../scheme/storage'
 import Caption from '../../components/Caption'
-import { RefWordContext } from '../../utils/context'
 
 const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
   const [userStorage] = useLocalStorage<UserStorage>('live-reference.user')
   const [storedWords, setStoredWords] = useState<WordData[]>([])
-  const refWord = useContext(RefWordContext)
+  const [refWord, setRefWord] = useState<string>('')
 
   const db = firebase.firestore()
   const wordsRef = db.collection('rooms').doc(`${roomId}`).collection('words')
@@ -37,7 +36,7 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
     <Layout title={`ルーム[ID: ${roomId}]`}>
       <GridContainer>
         <LeftTopBox>
-          <Caption words={storedWords} />
+          <Caption words={storedWords} onClickWord={word => setRefWord(word)} />
         </LeftTopBox>
         <LeftBottomBox>
           <Control roomId={roomId} user={userStorage} />
