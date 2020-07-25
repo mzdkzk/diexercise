@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import firebase from '../../utils/firebase'
-import { WordData } from '../../scheme/db'
+import React, { useState } from 'react'
 import {
   GridContainer,
   Layout,
@@ -23,27 +21,13 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
   if (typeof window !== 'undefined' && !userStorage.name) {
     Router.push(`/?roomId=${roomId}`)
   }
-
-  const [storedWords, setStoredWords] = useState<WordData[]>([])
   const [refWord, setRefWord] = useState<string>('')
-
-  const db = firebase.firestore()
-  const wordsRef = db.collection('rooms').doc(`${roomId}`).collection('words')
-
-  useEffect(() => {
-    const unsubscribe = wordsRef
-      .orderBy('updatedAt', 'desc')
-      .onSnapshot(snapshot => {
-        setStoredWords(snapshot.docs.map(doc => doc.data() as WordData))
-      })
-    return () => unsubscribe()
-  }, [])
 
   return (
     <Layout title={`ルーム[ID: ${roomId}]`}>
       <GridContainer>
         <LeftTopBox>
-          <Caption words={storedWords} onClickWord={word => setRefWord(word)} />
+          <Caption roomId={roomId} onClickWord={word => setRefWord(word)} />
         </LeftTopBox>
         <LeftBottomBox>
           <Control roomId={roomId} user={userStorage} />

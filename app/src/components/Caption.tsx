@@ -1,7 +1,8 @@
 import reactStringReplace from 'react-string-replace'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { WordData } from '../scheme/db'
 import styled from 'styled-components'
+import firebase from '../utils/firebase'
 
 const CaptionContainer = styled.div`
   overflow: scroll;
@@ -29,14 +30,28 @@ const Word = styled.p<{ color?: string }>`
 `
 
 type Props = {
-  words: WordData[]
+  roomId: string
   onClickWord: (word: string) => void
 }
 
-const Caption: React.FC<Props> = ({ words, onClickWord }) => {
+const Caption: React.FC<Props> = ({ roomId, onClickWord }) => {
+  const [storedWords, setStoredWords] = useState<WordData[]>([])
+
+  const db = firebase.firestore()
+  const wordsRef = db.collection('rooms').doc(`${roomId}`).collection('words')
+
+  useEffect(() => {
+    const unsubscribe = wordsRef
+      .orderBy('updatedAt', 'desc')
+      .onSnapshot(snapshot => {
+        setStoredWords(snapshot.docs.map(doc => doc.data() as WordData))
+      })
+    return () => unsubscribe()
+  }, [])
+
   return (
     <CaptionContainer>
-      {words.map(word => {
+      {storedWords.map(word => {
         const replacedText = reactStringReplace(
           word.text,
           /\[(.+?)\]/g,
