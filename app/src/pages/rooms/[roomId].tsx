@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Layout } from '../../components/layouts'
+import Layout from '../../components/Layout'
 import Reference from '../../components/Reference'
 import { GetServerSideProps } from 'next'
 import Router from 'next/router'

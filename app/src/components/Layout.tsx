@@ -5,7 +5,7 @@ type Props = {
   title?: string
 }
 
-export const Layout: React.FC<Props> = ({ children, title }) => (
+const Layout: React.FC<Props> = ({ children, title }) => (
   <>
     <Head>
       <title>{(title ? `${title} - ` : '') + 'Live※Reference'}</title>
@@ -13,3 +13,5 @@ export const Layout: React.FC<Props> = ({ children, title }) => (
     {children}
   </>
 )
+
+export default Layout
