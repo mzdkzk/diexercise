@@ -26,9 +26,11 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
   const wordsRef = db.collection('rooms').doc(`${roomId}`).collection('words')
 
   useEffect(() => {
-    const unsubscribe = wordsRef.orderBy('updatedAt').onSnapshot(snapshot => {
-      setStoredWords(snapshot.docs.map(doc => doc.data() as WordData))
-    })
+    const unsubscribe = wordsRef
+      .orderBy('updatedAt', 'desc')
+      .onSnapshot(snapshot => {
+        setStoredWords(snapshot.docs.map(doc => doc.data() as WordData))
+      })
     return () => unsubscribe()
   }, [])
 
