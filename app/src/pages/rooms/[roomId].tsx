@@ -1,12 +1,5 @@
 import React, { useState } from 'react'
-import {
-  GridContainer,
-  Layout,
-  LeftBottomBox,
-  LeftTopBox,
-  RightBottomBox,
-  RightTopBox
-} from '../../components/layouts'
+import { Layout } from '../../components/layouts'
 import Reference from '../../components/Reference'
 import { GetServerSideProps } from 'next'
 import Router from 'next/router'
@@ -15,6 +8,53 @@ import { PageFC } from '../../scheme/pages'
 import { useLocalStorage } from '../../utils/storage'
 import { UserStorage } from '../../scheme/storage'
 import Caption from '../../components/Caption'
+import styled from 'styled-components'
+import colors from '../../config/colors'
+
+export const GridContainer = styled.div`
+  // https://stackoverflow.com/questions/44488357/equal-height-rows-in-css-grid-layout
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-rows: 1fr;
+  width: 100vw;
+  height: 100vh;
+  background-color: ${colors.borders.right}; // RightBoxの丸角を埋めるため
+`
+
+const Box = styled.div`
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: white;
+`
+
+const LeftBox = styled(Box)``
+
+const RightBox = styled(Box)`
+  border: solid 0.5rem ${colors.borders.right};
+  border-radius: 1rem;
+`
+
+export const LeftTopBox = styled(LeftBox)`
+  border-top: solid 1rem ${colors.borders.left};
+  grid-column: 1 / 2;
+  grid-row: 1 / 7;
+`
+
+export const LeftBottomBox = styled(LeftBox)`
+  background-color: ${colors.borders.left};
+  grid-column: 1 / 2;
+  grid-row: 7 / 8;
+`
+
+export const RightTopBox = styled(RightBox)`
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+`
+
+export const RightBottomBox = styled(RightBox)`
+  grid-column: 2 / 3;
+  grid-row: 2 / 8;
+`
 
 const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
   const [userStorage] = useLocalStorage<UserStorage>('live-reference.user')
