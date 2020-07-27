@@ -7,6 +7,10 @@ export const colorSet = {
 export default {
   text: '#001000',
   background: colorSet.secondary,
+  scrollBar: {
+    thumb: colorSet.primary,
+    track: 'rgba(0, 0, 0, 0.4)'
+  },
   buttons: {
     default: colorSet.primary,
     text: '#f9f9fa',

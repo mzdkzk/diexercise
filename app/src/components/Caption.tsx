@@ -3,14 +3,30 @@ import React, { useEffect, useState } from 'react'
 import { WordData } from '../scheme/db'
 import styled from 'styled-components'
 import firebase from '../utils/firebase'
+import colors from '../config/colors'
 
 const CaptionContainer = styled.div`
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   height: 100%;
+  padding-right: 0.5rem;
+  ::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: ${colors.scrollBar.track};
+    border-radius: 1rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: ${colors.scrollBar.thumb};
+    border-radius: 1rem;
+  }
 `
 
 const CaptionItem = styled.div`
-  margin-top: 1rem;
+  &:not(:first-child) {
+    margin-top: 2rem;
+  }
 `
 
 const Speaker = styled.p`
@@ -18,15 +34,17 @@ const Speaker = styled.p`
   font-size: 1.5rem;
   font-weight: bold;
   margin-top: 1rem;
+  :after {
+    content: ':';
+  }
 `
 
 const Word = styled.p<{ color?: string }>`
+  margin-top: 0.5rem;
   text-align: initial;
   font-size: 1.5rem;
-  line-height: 1.5rem;
+  line-height: 2.5rem;
   color: ${({ color }) => color || 'black'};
-  max-height: 3rem;
-  overflow: hidden;
 `
 
 type Props = {

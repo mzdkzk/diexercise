@@ -22,7 +22,7 @@ export const GridContainer = styled.div`
 `
 
 const Box = styled.div`
-  padding: 2rem;
+  padding: 1.5rem;
   box-sizing: border-box;
   background-color: white;
 `
