@@ -74,7 +74,7 @@ const Caption: React.FC<Props> = ({ roomId, onClickWord }) => {
           word.text,
           /\[(.+?)\]/g,
           (match, i) => (
-            <a href="#" key={i} onClick={() => onClickWord(match)}>
+            <a href={`#${match}`} key={i} onClick={() => onClickWord(match)}>
               {match}
             </a>
           )
