@@ -32,7 +32,6 @@ const LeftBox = styled(Box)``
 const RightBox = styled(Box)`
   border-left: solid 1rem ${colors.borders.right};
   border-right: solid 1rem ${colors.borders.right};
-  border-radius: 1.5rem;
 `
 
 export const LeftTopBox = styled(LeftBox)`
@@ -52,6 +51,7 @@ export const RightTopBox = styled(RightBox)`
   border-bottom: solid 0.5rem ${colors.borders.right};
   grid-column: 2 / 3;
   grid-row: 1 / 2;
+  border-radius: 1.5rem 1.5rem 1rem 1rem;
 `
 
 export const RightBottomBox = styled(RightBox)`
@@ -59,6 +59,7 @@ export const RightBottomBox = styled(RightBox)`
   border-bottom: solid 1rem ${colors.borders.right};
   grid-column: 2 / 3;
   grid-row: 2 / 10;
+  border-radius: 1rem 1rem 1.5rem 1.5rem;
 `
 
 const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
