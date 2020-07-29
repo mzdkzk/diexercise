@@ -22,7 +22,7 @@ export const GridContainer = styled.div`
 `
 
 const Box = styled.div`
-  padding: 1.5rem;
+  padding: 1rem;
   box-sizing: border-box;
   background-color: white;
 `
@@ -30,30 +30,35 @@ const Box = styled.div`
 const LeftBox = styled(Box)``
 
 const RightBox = styled(Box)`
-  border: solid 0.5rem ${colors.borders.right};
-  border-radius: 1rem;
+  border-left: solid 1rem ${colors.borders.right};
+  border-right: solid 1rem ${colors.borders.right};
+  border-radius: 1.5rem;
 `
 
 export const LeftTopBox = styled(LeftBox)`
   border-top: solid 1rem ${colors.borders.left};
   grid-column: 1 / 2;
-  grid-row: 1 / 7;
+  grid-row: 1 / 9;
 `
 
 export const LeftBottomBox = styled(LeftBox)`
   background-color: ${colors.borders.left};
   grid-column: 1 / 2;
-  grid-row: 7 / 8;
+  grid-row: 9 / 10;
 `
 
 export const RightTopBox = styled(RightBox)`
+  border-top: solid 1rem ${colors.borders.right};
+  border-bottom: solid 0.5rem ${colors.borders.right};
   grid-column: 2 / 3;
   grid-row: 1 / 2;
 `
 
 export const RightBottomBox = styled(RightBox)`
+  border-top: solid 0.5rem ${colors.borders.right};
+  border-bottom: solid 1rem ${colors.borders.right};
   grid-column: 2 / 3;
-  grid-row: 2 / 8;
+  grid-row: 2 / 10;
 `
 
 const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
