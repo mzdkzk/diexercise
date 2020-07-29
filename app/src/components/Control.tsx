@@ -4,6 +4,7 @@ import firebase from '../utils/firebase'
 import { UserStorage } from '../scheme/storage'
 import styled from 'styled-components'
 import colors from '../config/colors'
+import MenuDropup from './controls/MenuDropup'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -96,9 +97,7 @@ const Control: React.FC<Props> = ({ roomId, user }) => {
   const isRecording = recognition !== null
   return (
     <ControlContainer>
-      <ControlButton>
-        <img src="/menu.svg" />
-      </ControlButton>
+      <MenuDropup roomId={roomId} />
       <ControlButton
         isPressed={isRecording}
         onClick={() => {
