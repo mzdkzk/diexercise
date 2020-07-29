@@ -19,7 +19,9 @@ export default {
   },
   controls: {
     default: 'transparent',
-    pressed: 'rgba(1,1,1,0.2)'
+    hover: 'rgba(1,1,1,0.1)',
+    pressed: 'rgba(1,1,1,0.2)',
+    itemHover: '#ddd'
   },
   borders: {
     left: colorSet.secondary,
