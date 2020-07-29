@@ -4,13 +4,13 @@ import colors from '../../../config/colors'
 
 const DropupButton = styled.button<{ isPressed?: boolean }>`
   background-color: ${({ isPressed }) =>
-    isPressed ? colors.controls.pressed : colors.controls.default};
+    isPressed ? colors.dropup.pressed : colors.dropup.default};
   width: 4rem;
   height: 4rem;
   cursor: pointer;
   &:hover {
     background-color: ${({ isPressed }) =>
-      isPressed ? colors.controls.pressed : colors.controls.hover};
+      isPressed ? colors.dropup.pressed : colors.dropup.hover};
   }
   img {
     width: 3rem;
@@ -19,21 +19,28 @@ const DropupButton = styled.button<{ isPressed?: boolean }>`
 `
 
 const DropupItemContainer = styled.div`
+  background-color: white;
   position: absolute;
   bottom: 5rem;
   left: -5rem;
   min-width: 20rem;
+  height: 20rem;
+  overflow-y: scroll;
   box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.2);
   z-index: 1;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 export const DropupItem = styled.button`
-  padding: 0.5rem 1rem;
+  background-color: white;
+  padding: 0.8rem 1.2rem;
   font-size: 1rem;
   width: 100%;
   text-align: left;
   &:hover {
-    background-color: ${colors.controls.itemHover};
+    background-color: ${colors.dropup.hover};
   }
 `
 
@@ -52,7 +59,6 @@ type Props = {
 
 const Dropup: React.FC<Props> = ({ buttonImgSrc, buttonImgAlt, children }) => {
   const [pressed, setPressed] = useState<boolean>(false)
-
   return (
     <DropupContainer isPressed={pressed}>
       <DropupButton isPressed={pressed} onClick={() => setPressed(!pressed)}>

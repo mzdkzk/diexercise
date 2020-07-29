@@ -17,11 +17,10 @@ export default {
     hover: colorSet.primaryDark,
     pressed: colorSet.primaryDark
   },
-  controls: {
+  dropup: {
     default: 'transparent',
     hover: 'rgba(1,1,1,0.1)',
-    pressed: 'rgba(1,1,1,0.2)',
-    itemHover: '#ddd'
+    pressed: 'rgba(1,1,1,0.2)'
   },
   borders: {
     left: colorSet.secondary,

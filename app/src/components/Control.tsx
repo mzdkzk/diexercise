@@ -16,7 +16,7 @@ const ControlContainer = styled.div`
 
 const ControlButton = styled.button<{ isPressed?: boolean }>`
   background-color: ${({ isPressed }) =>
-    isPressed ? colors.controls.pressed : colors.controls.default};
+    isPressed ? colors.dropup.pressed : colors.dropup.default};
   width: 4rem;
   height: 4rem;
   cursor: pointer;
