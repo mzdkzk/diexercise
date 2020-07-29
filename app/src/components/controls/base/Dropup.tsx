@@ -8,6 +8,10 @@ const DropupButton = styled.button<{ isPressed?: boolean }>`
   width: 4rem;
   height: 4rem;
   cursor: pointer;
+  &:hover {
+    background-color: ${({ isPressed }) =>
+      isPressed ? colors.controls.pressed : colors.controls.hover};
+  }
   img {
     width: 3rem;
     height: 3rem;
@@ -16,20 +20,20 @@ const DropupButton = styled.button<{ isPressed?: boolean }>`
 
 const DropupItemContainer = styled.div`
   position: absolute;
-  bottom: 50px;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  bottom: 5rem;
+  left: -5rem;
+  min-width: 20rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.2);
   z-index: 1;
 `
 
 export const DropupItem = styled.button`
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+  text-align: left;
   &:hover {
-    background-color: #ddd;
+    background-color: ${colors.controls.itemHover};
   }
 `
 
