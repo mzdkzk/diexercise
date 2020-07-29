@@ -1,7 +1,7 @@
 export const colorSet = {
-  primary: '#94cfbe',
+  primary: '#95D1BF',
   primaryDark: '#3ca08b',
-  secondary: '#cfe8e1'
+  secondary: '#D1EAE2'
 }
 
 export default {
