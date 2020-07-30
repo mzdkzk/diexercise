@@ -39,12 +39,14 @@ export const DropupImg = styled.img`
   margin-right: 0.5rem;
 `
 
-export const DropupItem = styled.button`
-  background-color: white;
+export const DropupItem = styled.button<{ isPressed?: boolean }>`
+  background-color: ${({ isPressed }) =>
+    isPressed ? colors.dropup.pressed : 'white'};
   padding: 0.8rem 1.2rem;
   font-size: 1rem;
   width: 100%;
   text-align: left;
+  outline: none;
   &:hover {
     background-color: ${colors.dropup.hover};
   }

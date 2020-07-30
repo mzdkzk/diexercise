@@ -20,7 +20,7 @@ const Modal = styled.div<{ isOpen: boolean }>`
 const Overlay = styled.div<{ isOpen: boolean }>`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
   position: fixed;
-  background-color: rgba(1, 1, 1, 0.2);
+  background-color: rgba(1, 1, 1, 0.3);
   width: 100vw;
   height: 100vh;
   left: 0;
