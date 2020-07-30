@@ -8,6 +8,7 @@ const DropupButton = styled.button<{ isPressed?: boolean }>`
   width: 4rem;
   height: 4rem;
   cursor: pointer;
+  outline: none;
   &:hover {
     background-color: ${({ isPressed }) =>
       isPressed ? colors.dropup.pressed : colors.dropup.hover};
@@ -31,6 +32,11 @@ const DropupItemContainer = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
+`
+
+export const DropupImg = styled.img`
+  width: 1rem;
+  margin-right: 0.5rem;
 `
 
 export const DropupItem = styled.button`
