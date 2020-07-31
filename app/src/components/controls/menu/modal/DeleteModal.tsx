@@ -8,10 +8,11 @@ const Modal = styled.div<{ isOpen: boolean }>`
   position: fixed;
   left: 0;
   right: 0;
-  top: 1rem;
+  top: 0;
+  bottom: 0;
   margin: auto;
   width: 30rem;
-  height: 20rem;
+  height: 15rem;
   box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.2);
   background-color: white;
   z-index: 3;
@@ -30,10 +31,8 @@ const Overlay = styled.div<{ isOpen: boolean }>`
 
 const ModalText = styled.p`
   position: absolute;
-  top: 2rem;
-  left: 0;
-  right: 0;
-  margin: auto;
+  top: 3rem;
+  left: 3rem;
 `
 
 const ModalButton = styled.button<{ isConfirm?: boolean }>`
