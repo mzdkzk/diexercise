@@ -39,12 +39,14 @@ export const DropupImg = styled.img`
   margin-right: 0.5rem;
 `
 
-export const DropupItem = styled.button`
-  background-color: white;
+export const DropupItem = styled.button<{ isPressed?: boolean }>`
+  background-color: ${({ isPressed }) =>
+    isPressed ? colors.dropup.pressed : 'white'};
   padding: 0.8rem 1.2rem;
   font-size: 1rem;
   width: 100%;
   text-align: left;
+  outline: none;
   &:hover {
     background-color: ${colors.dropup.hover};
   }
@@ -58,6 +60,15 @@ const DropupContainer = styled.div<{ isPressed: boolean }>`
   }
 `
 
+const DropupOverlay = styled.div<{ isPressed: boolean }>`
+  display: ${({ isPressed }) => (isPressed ? 'block' : 'none')};
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+`
+
 type Props = {
   buttonImgSrc: string
   buttonImgAlt: string
@@ -66,12 +77,15 @@ type Props = {
 const Dropup: React.FC<Props> = ({ buttonImgSrc, buttonImgAlt, children }) => {
   const [pressed, setPressed] = useState<boolean>(false)
   return (
-    <DropupContainer isPressed={pressed}>
-      <DropupButton isPressed={pressed} onClick={() => setPressed(!pressed)}>
-        <img src={buttonImgSrc} alt={buttonImgAlt} />
-      </DropupButton>
-      <DropupItemContainer>{children}</DropupItemContainer>
-    </DropupContainer>
+    <>
+      <DropupContainer isPressed={pressed}>
+        <DropupButton isPressed={pressed} onClick={() => setPressed(!pressed)}>
+          <img src={buttonImgSrc} alt={buttonImgAlt} />
+        </DropupButton>
+        <DropupItemContainer>{children}</DropupItemContainer>
+      </DropupContainer>
+      <DropupOverlay isPressed={pressed} onClick={() => setPressed(false)} />
+    </>
   )
 }
 
