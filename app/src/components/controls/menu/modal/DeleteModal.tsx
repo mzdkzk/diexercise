@@ -45,7 +45,8 @@ const ModalButton = styled.button<{ isConfirm?: boolean }>`
     ${({ isConfirm }) => (isConfirm ? colors.buttons.default : '#888')};
   padding: 0.5rem 1rem;
   &:hover {
-    background-color: ${colors.buttons.hover};
+    background-color: ${({ isConfirm }) =>
+      isConfirm ? colors.buttons.hover : '#ddd'};
   }
 `
 
