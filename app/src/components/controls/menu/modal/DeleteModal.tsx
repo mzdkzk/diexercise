@@ -29,11 +29,11 @@ const Overlay = styled.div<{ isOpen: boolean }>`
 `
 
 const ModalText = styled.p`
-  margin-top: 0.5rem;
-`
-
-const ModalButtonContainer = styled.div`
-  margin-top: 1rem;
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  right: 0;
+  margin: auto;
 `
 
 const ModalButton = styled.button<{ isConfirm?: boolean }>`
@@ -41,10 +41,27 @@ const ModalButton = styled.button<{ isConfirm?: boolean }>`
     isConfirm ? colors.buttons.default : 'white'};
   color: ${({ isConfirm }) => (isConfirm ? 'white' : 'black')};
   border-radius: 0.5rem;
+  border: solid 0.02rem
+    ${({ isConfirm }) => (isConfirm ? colors.buttons.default : '#888')};
   padding: 0.5rem 1rem;
   &:hover {
     background-color: ${colors.buttons.hover};
   }
+`
+
+const ModalButtonContainer = styled.div`
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  ${ModalButton}:not(:last-child) {
+    margin-right: 1rem;
+  }
+`
+
+const ModalContent = styled.div`
+  position: relative;
+  height: 100%;
+  width: 100%;
 `
 
 type OverlayProps = {
@@ -65,18 +82,20 @@ const DeleteModal: React.FC<ModalProps> = ({ roomId, isOpen, modalClose }) => {
   return (
     <>
       <Modal isOpen={isOpen}>
-        <ModalText>{'本当に削除しますか？'}</ModalText>
-        <ModalButtonContainer>
-          <ModalButton
-            type="button"
-            isConfirm={true}
-            onClick={() => deleteLog()}>
-            {'削除する'}
-          </ModalButton>
-          <ModalButton type="button" onClick={modalClose}>
-            {'キャンセル'}
-          </ModalButton>
-        </ModalButtonContainer>
+        <ModalContent>
+          <ModalText>{'本当に削除しますか？'}</ModalText>
+          <ModalButtonContainer>
+            <ModalButton
+              type="button"
+              isConfirm={true}
+              onClick={() => deleteLog()}>
+              {'削除する'}
+            </ModalButton>
+            <ModalButton type="button" onClick={modalClose}>
+              {'キャンセル'}
+            </ModalButton>
+          </ModalButtonContainer>
+        </ModalContent>
       </Modal>
       <Overlay isOpen={isOpen} onClick={modalClose} />
     </>
