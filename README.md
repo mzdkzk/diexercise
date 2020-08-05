@@ -1,11 +1,39 @@
-# diexercise
-デザイン情報総合演習グループF1用リポジトリ
+# Live※Reference
+
+* Web: https://live-reference-wcvgewglma-an.a.run.app
+* Repo: https://github.com/mzdkzk/diexercise
+
+## 使い方
+1. Webにアクセス
+2. ユーザー名を入力してルームを作成
+3. 左下のメニューボタンからルームへの招待リンクを取得し、参加者に配布
+4. 参加者は招待リンクから名前を入力してルームに入室
+5. 左下のマイクボタンをクリックして音声認識を開始
+
+## 動作条件
+最新のデスクトップ版Google Chromeでのみ動作を確認しています
 
 ## 開発
-`/api`以下の動作にはFirebaseの認証鍵が必要なので、代わりに本番環境のものを使ってください
+開発には [Docker](https://www.docker.com) または [Node.js](https://nodejs.org) が必要です
 
+### Docker
 ```bash
-$ echo NEXT_PUBLIC_API_BASE_URL={本番環境のURL} > app/.env.local
 $ docker-compose build
 $ docker-compose up -d
 ```
+
+### Node.js
+```bash
+$ cd app
+$ npm install -g yarn
+$ yarn && yarn dev
+```
+
+なお、`/api`以下の動作にはFirebaseの認証鍵が必要なので、代わりに本番環境のものを使ってください。  
+以下のコマンドを実行することで`/api`以下を呼び出す際に本番環境のものを使用します。
+
+```bash
+$ echo NEXT_PUBLIC_API_BASE_URL={本番環境のURL} > app/.env.local
+```
+
+http://localhost:3000 などにアクセスして開発を開始できます
