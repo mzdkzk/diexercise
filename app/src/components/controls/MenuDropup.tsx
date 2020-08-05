@@ -3,6 +3,7 @@ import Dropup from './base/Dropup'
 import LinkCopy from './menu/LinkCopy'
 import DeleteLog from './menu/DeleteLog'
 import DeleteModal from './menu/modal/DeleteModal'
+import ExportLog from './menu/ExportLog'
 
 const MenuDropup: React.FC<{ roomId: string }> = ({ roomId }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
@@ -15,6 +16,7 @@ const MenuDropup: React.FC<{ roomId: string }> = ({ roomId }) => {
           isModalOpen={isDeleteModalOpen}
           openModal={() => setDeleteModalOpen(true)}
         />
+        <ExportLog roomId={roomId} />
       </Dropup>
       <DeleteModal
         roomId={roomId}
