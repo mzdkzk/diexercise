@@ -26,19 +26,37 @@ const ControlButton = styled.button<{ isPressed?: boolean }>`
   }
 `
 
-const getRecognition = (): SpeechRecognition | null => {
-  try {
-    const SpeechRecognition =
-      (window as any).webkitSpeechRecognition ||
-      (window as any).SpeechRecognition
-    const recognition = new SpeechRecognition()
-    recognition.lang = 'ja-JP'
-    recognition.interimResults = true
-    recognition.continuous = true
-    return recognition
-  } catch (e) {
+const getRecognition = (
+  onResult: (e: SpeechRecognitionEvent) => void
+): SpeechRecognition | null => {
+  const SpeechRecognition = (window as any).webkitSpeechRecognition
+  if (typeof SpeechRecognition === 'undefined') {
     return null
   }
+  const recognition: SpeechRecognition = new SpeechRecognition()
+  recognition.lang = 'ja-JP'
+  recognition.interimResults = true
+  recognition.continuous = true
+  recognition.addEventListener('result', onResult)
+  recognition.addEventListener('error', e => {
+    console.log(`[SpeechRecognition] errorイベント(${e.error})`)
+    if (e.error === 'no-speech') {
+      recognition.start()
+      console.log(`[SpeechRecognition] 再開しました`)
+    }
+  })
+  recognition.addEventListener('speechend', () => {
+    console.log('[SpeechRecognition] speechendイベント')
+    setTimeout(() => {
+      try {
+        recognition.start()
+        console.log('[SpeechRecognition] 再開しました')
+      } catch (e) {
+        console.log('[SpeechRecognition] 再開しようとしてエラーになりました')
+      }
+    }, 500)
+  })
+  return recognition
 }
 
 type Props = {
@@ -58,31 +76,30 @@ const Control: React.FC<Props> = ({ roomId, user }) => {
   }, [])
 
   let wordId: string | undefined
+  const onResult = async (e: SpeechRecognitionEvent) => {
+    const text = e.results[e.resultIndex][0].transcript
+    if (e.results[e.resultIndex].isFinal) {
+      await request.post(`/api/rooms/${roomId}/${wordId}`, {
+        json: { text }
+      })
+      wordId = undefined
+    } else {
+      wordId = wordId || `${+new Date()}`
+      // Firestoreへの書き込み数削減のために奇数文字ずつDBに適用
+      if (text.length % 2 === 1) {
+        await wordsRef
+          .doc(wordId)
+          .set({ user, text, updatedAt: new Date() }, { merge: true })
+      }
+    }
+  }
 
   const startRecord = () => {
-    const recognition = getRecognition()
-    if (!recognition) {
+    const recognition = getRecognition(onResult)
+    if (recognition == null) {
       alert('このブラウザは音声入力に対応していません')
       return
     }
-    const onResult = async (e: SpeechRecognitionEvent) => {
-      const text = e.results[e.resultIndex][0].transcript
-      if (e.results[e.resultIndex].isFinal) {
-        await request.post(`/api/rooms/${roomId}/${wordId}`, {
-          json: { text }
-        })
-        wordId = undefined
-      } else {
-        wordId = wordId || `${+new Date()}`
-        // Firestoreへの書き込み数削減のために奇数文字ずつDBに適用
-        if (text.length % 2 === 1) {
-          await wordsRef
-            .doc(wordId)
-            .set({ user, text, updatedAt: new Date() }, { merge: true })
-        }
-      }
-    }
-    recognition.addEventListener('result', onResult)
     recognition.start()
     setRecognition(recognition)
   }
