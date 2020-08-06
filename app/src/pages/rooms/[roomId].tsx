@@ -92,6 +92,7 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
           )}
         </RightTopBox>
         <RightBottomBox>
+          <Caption roomId={roomId} />
           <Reference word={refWord} />
         </RightBottomBox>
       </GridContainer>
