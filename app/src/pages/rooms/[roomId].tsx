@@ -91,8 +91,9 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
     <Layout title={`ルーム[ID: ${roomId}]`}>
       <GridContainer>
         <LeftTopBox>
-          <Caption roomId={roomId} onClickWord={word => setRefWord(word)} />
-          <ScrollbarContainer />
+          <ScrollbarContainer>
+            <Caption roomId={roomId} onClickWord={word => setRefWord(word)} />
+          </ScrollbarContainer>
         </LeftTopBox>
         <LeftBottomBox>
           <Control roomId={roomId} user={userStorage} />
@@ -111,8 +112,9 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
           )}
         </RightTopBox>
         <RightBottomBox>
-          <Reference word={refWord} />
-          <ScrollbarContainer />
+          <ScrollbarContainer>
+            <Reference word={refWord} />
+          </ScrollbarContainer>
         </RightBottomBox>
       </GridContainer>
     </Layout>
