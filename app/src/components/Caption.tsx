@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { WordData } from '../scheme/db'
 import styled from 'styled-components'
 import firebase from '../utils/firebase'
-import colors from '../config/colors'
 
 const CaptionContainer = styled.div`
 `
