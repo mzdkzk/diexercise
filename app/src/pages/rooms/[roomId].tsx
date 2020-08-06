@@ -52,6 +52,22 @@ const ScrollbarContainer = styled.div`
   }
 `
 
+const ReferenceWord = styled.div`
+  font-weight: bold;
+  color: ${colors.text.bold};
+  font-size: 1.8rem;
+  padding-bottom: 1.0rem;
+  letter-spacing:0.2em;
+`
+
+const ReferenceDetail = styled.div`
+  font-family:'メイリオ', 'Meiryo','ＭＳ ゴシック','Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3',sans-serif;
+  font-size: 1.2rem;
+  color: ${colors.text.detail};
+  line-height: 1.5;
+  word-break: normal;
+`
+
 export const LeftTopBox = styled(LeftBox)`
   border-top: solid 1rem ${colors.borders.left};
   grid-column: 1 / 2;
@@ -99,7 +115,9 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
           <Control roomId={roomId} user={userStorage} />
         </LeftBottomBox>
         <RightTopBox>
-          {refWord}
+          <ReferenceWord>
+            {refWord}
+          </ReferenceWord>
           {refWord ? (
             <a
               target="_blank"
@@ -113,7 +131,9 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
         </RightTopBox>
         <RightBottomBox>
           <ScrollbarContainer>
-            <Reference word={refWord} />
+            <ReferenceDetail>
+              <Reference word={refWord} />
+            </ReferenceDetail>
           </ScrollbarContainer>
         </RightBottomBox>
       </GridContainer>

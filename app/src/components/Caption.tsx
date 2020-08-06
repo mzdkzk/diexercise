@@ -26,8 +26,8 @@ const Speaker = styled.p`
 const Word = styled.p<{ color?: string }>`
   margin-top: 0.5rem;
   text-align: initial;
-  font-size: 1.5rem;
-  line-height: 2.5rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
   color: ${({ color }) => color || 'black'};
 `
 
