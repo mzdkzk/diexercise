@@ -34,11 +34,7 @@ const RightBox = styled(Box)`
   border-right: solid 1rem ${colors.borders.right};
 `
 
-export const LeftTopBox = styled(LeftBox)`
-  border-top: solid 1rem ${colors.borders.left};
-  grid-column: 1 / 2;
-  grid-row: 1 / 9;
-
+const ScrollbarContainer = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   height: 100%;
@@ -47,15 +43,19 @@ export const LeftTopBox = styled(LeftBox)`
     width: 0.8rem;
   }
   ::-webkit-scrollbar-track {
-    margin: 0.5rem;
     background-color: ${colors.scrollBar.track};
     border-radius: 1rem;
   }
   ::-webkit-scrollbar-thumb {
-    margin: 0.5rem;
     background-color: ${colors.scrollBar.thumb};
     border-radius: 1rem;
   }
+`
+
+export const LeftTopBox = styled(LeftBox)`
+  border-top: solid 1rem ${colors.borders.left};
+  grid-column: 1 / 2;
+  grid-row: 1 / 9;
 `
 
 export const LeftBottomBox = styled(LeftBox)`
@@ -78,24 +78,6 @@ export const RightBottomBox = styled(RightBox)`
   grid-column: 2 / 3;
   grid-row: 2 / 10;
   border-radius: 1rem 1rem 1.5rem 1.5rem;
-
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
-  padding-right: 0.5rem;
-  ::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  ::-webkit-scrollbar-track {
-    margin: 0.5rem;
-    background-color: ${colors.scrollBar.track};
-    border-radius: 1rem;
-  }
-  ::-webkit-scrollbar-thumb {
-    margin: 0.5rem;
-    background-color: ${colors.scrollBar.thumb};
-    border-radius: 1rem;
-  }
 `
 
 const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
@@ -110,6 +92,7 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
       <GridContainer>
         <LeftTopBox>
           <Caption roomId={roomId} onClickWord={word => setRefWord(word)} />
+          <ScrollbarContainer />
         </LeftTopBox>
         <LeftBottomBox>
           <Control roomId={roomId} user={userStorage} />
@@ -129,6 +112,7 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
         </RightTopBox>
         <RightBottomBox>
           <Reference word={refWord} />
+          <ScrollbarContainer />
         </RightBottomBox>
       </GridContainer>
     </Layout>
