@@ -38,6 +38,22 @@ export const LeftTopBox = styled(LeftBox)`
   border-top: solid 1rem ${colors.borders.left};
   grid-column: 1 / 2;
   grid-row: 1 / 9;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  padding-right: 0.5rem;
+  ::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: ${colors.scrollBar.track};
+    border-radius: 1rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: ${colors.scrollBar.thumb};
+    border-radius: 1rem;
+  }
 `
 
 export const LeftBottomBox = styled(LeftBox)`
@@ -60,6 +76,22 @@ export const RightBottomBox = styled(RightBox)`
   grid-column: 2 / 3;
   grid-row: 2 / 10;
   border-radius: 1rem 1rem 1.5rem 1.5rem;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  padding-right: 0.5rem;
+  ::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: ${colors.scrollBar.track};
+    border-radius: 1rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: ${colors.scrollBar.thumb};
+    border-radius: 1rem;
+  }
 `
 
 const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
@@ -92,7 +124,6 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
           )}
         </RightTopBox>
         <RightBottomBox>
-          <Caption roomId={roomId} />
           <Reference word={refWord} />
         </RightBottomBox>
       </GridContainer>
