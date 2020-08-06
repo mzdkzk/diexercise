@@ -34,6 +34,24 @@ const RightBox = styled(Box)`
   border-right: solid 1rem ${colors.borders.right};
 `
 
+const ScrollbarContainer = styled.div`
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  padding-right: 0.5rem;
+  ::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: ${colors.scrollBar.track};
+    border-radius: 1rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: ${colors.scrollBar.thumb};
+    border-radius: 1rem;
+  }
+`
+
 export const LeftTopBox = styled(LeftBox)`
   border-top: solid 1rem ${colors.borders.left};
   grid-column: 1 / 2;
@@ -73,7 +91,9 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
     <Layout title={`ルーム[ID: ${roomId}]`}>
       <GridContainer>
         <LeftTopBox>
-          <Caption roomId={roomId} onClickWord={word => setRefWord(word)} />
+          <ScrollbarContainer>
+            <Caption roomId={roomId} onClickWord={word => setRefWord(word)} />
+          </ScrollbarContainer>
         </LeftTopBox>
         <LeftBottomBox>
           <Control roomId={roomId} user={userStorage} />
@@ -92,7 +112,9 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
           )}
         </RightTopBox>
         <RightBottomBox>
-          <Reference word={refWord} />
+          <ScrollbarContainer>
+            <Reference word={refWord} />
+          </ScrollbarContainer>
         </RightBottomBox>
       </GridContainer>
     </Layout>

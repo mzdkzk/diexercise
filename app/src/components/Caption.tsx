@@ -3,24 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { WordData } from '../scheme/db'
 import styled from 'styled-components'
 import firebase from '../utils/firebase'
-import colors from '../config/colors'
 
 const CaptionContainer = styled.div`
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
-  padding-right: 0.5rem;
-  ::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-  ::-webkit-scrollbar-track {
-    background-color: ${colors.scrollBar.track};
-    border-radius: 1rem;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: ${colors.scrollBar.thumb};
-    border-radius: 1rem;
-  }
 `
 
 const CaptionItem = styled.div`
