@@ -34,6 +34,10 @@ const RightBox = styled(Box)`
   border-right: solid 1rem ${colors.borders.right};
 `
 
+const ReferenceWord = styled.div`
+  
+`
+
 export const LeftTopBox = styled(LeftBox)`
   border-top: solid 1rem ${colors.borders.left};
   grid-column: 1 / 2;
