@@ -47,10 +47,12 @@ export const LeftTopBox = styled(LeftBox)`
     width: 0.8rem;
   }
   ::-webkit-scrollbar-track {
+    margin: 0.5rem;
     background-color: ${colors.scrollBar.track};
     border-radius: 1rem;
   }
   ::-webkit-scrollbar-thumb {
+    margin: 0.5rem;
     background-color: ${colors.scrollBar.thumb};
     border-radius: 1rem;
   }
@@ -85,10 +87,12 @@ export const RightBottomBox = styled(RightBox)`
     width: 0.8rem;
   }
   ::-webkit-scrollbar-track {
+    margin: 0.5rem;
     background-color: ${colors.scrollBar.track};
     border-radius: 1rem;
   }
   ::-webkit-scrollbar-thumb {
+    margin: 0.5rem;
     background-color: ${colors.scrollBar.thumb};
     border-radius: 1rem;
   }
