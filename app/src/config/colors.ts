@@ -5,7 +5,11 @@ export const colorSet = {
 }
 
 export default {
-  text: '#001000',
+  text: {
+    default: '#001000',
+    bold: '#709E90',
+    detail: 'rgba(0,0,0,0.8)'
+  },
   background: colorSet.secondary,
   scrollBar: {
     thumb: '#709E90',
