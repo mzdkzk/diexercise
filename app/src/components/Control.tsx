@@ -62,10 +62,11 @@ const getRecognition = (
 
 type Props = {
   roomId: string
-  user: UserStorage
+  user: firebase.User | undefined
+  userStorage: UserStorage
 }
 
-const Control: React.FC<Props> = ({ roomId, user }) => {
+const Control: React.FC<Props> = ({ roomId, user, userStorage }) => {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
 
   const db = firebase.firestore()
@@ -90,7 +91,10 @@ const Control: React.FC<Props> = ({ roomId, user }) => {
       if (text.length % 2 === 1) {
         await wordsRef
           .doc(wordId)
-          .set({ user, text, updatedAt: new Date() }, { merge: true })
+          .set(
+            { user: userStorage, text, updatedAt: new Date() },
+            { merge: true }
+          )
       }
     }
   }
@@ -127,7 +131,7 @@ const Control: React.FC<Props> = ({ roomId, user }) => {
         }}>
         <img src="/control/microphone.svg" />
       </ControlButton>
-      <MembersDropup roomId={roomId} />
+      <MembersDropup roomId={roomId} user={user} userStorage={userStorage} />
     </ControlContainer>
   )
 }
