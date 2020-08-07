@@ -2,25 +2,8 @@ import React, { useEffect, useState } from 'react'
 import firebase from '../../utils/firebase'
 import request from '../../utils/request'
 import { UserStorage } from '../../scheme/storage'
-import styled from 'styled-components'
-import colors from '../../config/colors'
+import Button from './base/Button'
 
-const Button = styled.button<{ isPressed?: boolean }>`
-  background-color: ${({ isPressed }) =>
-    isPressed ? colors.dropup.pressed : colors.dropup.default};
-  width: 4rem;
-  height: 4rem;
-  cursor: pointer;
-  outline: none;
-  &:hover {
-    background-color: ${({ isPressed }) =>
-      isPressed ? colors.dropup.pressed : colors.dropup.hover};
-  }
-  img {
-    width: 3rem;
-    height: 3rem;
-  }
-`
 const getRecognition = (
   onResult: (e: SpeechRecognitionEvent) => void
 ): SpeechRecognition | null => {

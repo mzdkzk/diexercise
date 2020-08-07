@@ -1,23 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import colors from '../../../config/colors'
-
-const DropupButton = styled.button<{ isPressed?: boolean }>`
-  background-color: ${({ isPressed }) =>
-    isPressed ? colors.dropup.pressed : colors.dropup.default};
-  width: 4rem;
-  height: 4rem;
-  cursor: pointer;
-  outline: none;
-  &:hover {
-    background-color: ${({ isPressed }) =>
-      isPressed ? colors.dropup.pressed : colors.dropup.hover};
-  }
-  img {
-    width: 3rem;
-    height: 3rem;
-  }
-`
+import Button from './Button'
 
 const DropupItemContainer = styled.div`
   background-color: white;
@@ -79,9 +63,9 @@ const Dropup: React.FC<Props> = ({ buttonImgSrc, buttonImgAlt, children }) => {
   return (
     <>
       <DropupContainer isPressed={pressed}>
-        <DropupButton isPressed={pressed} onClick={() => setPressed(!pressed)}>
+        <Button isPressed={pressed} onClick={() => setPressed(!pressed)}>
           <img src={buttonImgSrc} alt={buttonImgAlt} />
-        </DropupButton>
+        </Button>
         <DropupItemContainer>{children}</DropupItemContainer>
       </DropupContainer>
       <DropupOverlay isPressed={pressed} onClick={() => setPressed(false)} />
