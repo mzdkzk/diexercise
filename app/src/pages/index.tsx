@@ -45,8 +45,8 @@ const IndexPage: PageFC = () => {
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
+    const credential = await firebase.auth().signInAnonymously()
     if (!roomId) {
-      const credential = await firebase.auth().signInAnonymously()
       const response = await request.post('/api/rooms', {
         json: { owner: userStorage, uid: credential.user!.uid }
       })
