@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import Router, { useRouter } from 'next/router'
 import request from '../utils/request'
 import { ApiData } from '../scheme/api'
-import { Input, Button } from '../components/forms'
 import Layout from '../components/Layout'
 import { PageFC } from '../scheme/pages'
 import firebase from '../utils/firebase'
 import { useLocalStorage } from '../utils/storage'
 import { UserStorage } from '../scheme/storage'
 import styled from 'styled-components'
+import colors from '../config/colors'
 
 const Title = styled.h1`
   margin-top: 10rem;
@@ -16,17 +16,31 @@ const Title = styled.h1`
   line-height: 3rem;
 `
 
-const NameInput = styled(Input)`
+const Button = styled.button`
+  background-color: ${colors.buttons.default};
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 5rem;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  margin-top: 2rem;
+  &,
+  * {
+    color: ${colors.buttons.text};
+  }
+  &:hover {
+    background-color: ${colors.buttons.hover};
+  }
+`
+
+const Input = styled.input`
+  font-size: 1.2rem;
+  text-align: initial;
   min-width: 30rem;
   padding: 1rem 1.5rem;
   border-radius: 1rem;
   margin-top: 3rem;
-`
-
-const NameButton = styled(Button)`
-  padding: 1rem 2rem;
-  border-radius: 1rem;
-  margin-top: 2rem;
 `
 
 const IndexPage: PageFC = () => {
@@ -61,18 +75,18 @@ const IndexPage: PageFC = () => {
     <Layout>
       <Title>Live※Reference</Title>
       <form onSubmit={onSubmitHandler}>
-        <NameInput
+        <Input
           onChange={onChangeHandler}
           value={userStorage.name}
           placeholder="ユーザー名を入力"
           required
         />
         <br />
-        <NameButton type="submit">
+        <Button type="submit">
           {'ルーム'}
           {roomId ? 'に入室' : 'を作成'}
           {isLoading ? '中...' : ''}
-        </NameButton>
+        </Button>
       </form>
     </Layout>
   )
