@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import colors from '../config/colors'
 import { AppProps } from 'next/app'
 import firebase from '../utils/firebase'
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const [user, setUser] = useState<firebase.User | undefined>(undefined)
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      pageProps.user = user
+      setUser(user)
     }
   })
   return (
@@ -30,7 +31,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           font-family: 'M PLUS 1p', monospace;
         }
       `}</style>
-      <Component {...pageProps} />
+      <Component user={user} {...pageProps} />
     </>
   )
 }

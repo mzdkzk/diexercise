@@ -5,6 +5,7 @@ import { UserStorage } from '../scheme/storage'
 import styled from 'styled-components'
 import colors from '../config/colors'
 import MenuDropup from './controls/MenuDropup'
+import MembersDropup from './controls/MemberDropup'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -61,10 +62,11 @@ const getRecognition = (
 
 type Props = {
   roomId: string
-  user: UserStorage
+  user: firebase.User | undefined
+  userStorage: UserStorage
 }
 
-const Control: React.FC<Props> = ({ roomId, user }) => {
+const Control: React.FC<Props> = ({ roomId, user, userStorage }) => {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null)
 
   const db = firebase.firestore()
@@ -89,7 +91,10 @@ const Control: React.FC<Props> = ({ roomId, user }) => {
       if (text.length % 2 === 1) {
         await wordsRef
           .doc(wordId)
-          .set({ user, text, updatedAt: new Date() }, { merge: true })
+          .set(
+            { user: userStorage, text, updatedAt: new Date() },
+            { merge: true }
+          )
       }
     }
   }
@@ -124,11 +129,9 @@ const Control: React.FC<Props> = ({ roomId, user }) => {
             startRecord()
           }
         }}>
-        <img src="/microphone.svg" />
+        <img src="/control/microphone.svg" />
       </ControlButton>
-      <ControlButton>
-        <img src="/members.svg" />
-      </ControlButton>
+      <MembersDropup roomId={roomId} user={user} userStorage={userStorage} />
     </ControlContainer>
   )
 }

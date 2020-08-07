@@ -97,9 +97,9 @@ export const RightBottomBox = styled(RightBox)`
   border-radius: 1rem 1rem 1.5rem 1.5rem;
 `
 
-const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
+const RoomPage: PageFC<{ roomId: string }> = ({ roomId, user }) => {
   const [userStorage] = useLocalStorage<UserStorage>('live-reference.user')
-  if (typeof window !== 'undefined' && !userStorage.name) {
+  if (typeof window !== 'undefined' && !userStorage) {
     Router.push(`/?roomId=${roomId}`)
   }
   const [refWord, setRefWord] = useState<string>('')
@@ -113,7 +113,7 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
           </ScrollbarContainer>
         </LeftTopBox>
         <LeftBottomBox>
-          <Control roomId={roomId} user={userStorage} />
+          <Control roomId={roomId} user={user} userStorage={userStorage} />
         </LeftBottomBox>
         <RightTopBox>
           <ReferenceWord>{refWord}</ReferenceWord>

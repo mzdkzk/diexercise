@@ -9,5 +9,11 @@ export type WordData = firebase.firestore.DocumentData & {
 
 export type RoomData = firebase.firestore.DocumentData & {
   owner: UserStorage
+  uid: string
   createdAt: firebase.firestore.Timestamp
+}
+
+export type MemberData = firebase.firestore.DocumentData & {
+  user: UserStorage
+  updatedAt: firebase.firestore.Timestamp
 }

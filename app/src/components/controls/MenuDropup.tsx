@@ -10,7 +10,7 @@ const MenuDropup: React.FC<{ roomId: string }> = ({ roomId }) => {
 
   return (
     <>
-      <Dropup buttonImgSrc="/menu.svg" buttonImgAlt="メニューボタン">
+      <Dropup buttonImgSrc="/control/menu.svg" buttonImgAlt="メニューボタン">
         <LinkCopy roomId={roomId} />
         <DeleteLog
           isModalOpen={isDeleteModalOpen}
