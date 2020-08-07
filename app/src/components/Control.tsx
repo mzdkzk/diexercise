@@ -5,6 +5,7 @@ import { UserStorage } from '../scheme/storage'
 import styled from 'styled-components'
 import colors from '../config/colors'
 import MenuDropup from './controls/MenuDropup'
+import MembersDropup from './controls/MemberDropup'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -124,11 +125,9 @@ const Control: React.FC<Props> = ({ roomId, user }) => {
             startRecord()
           }
         }}>
-        <img src="/microphone.svg" />
+        <img src="/control/microphone.svg" />
       </ControlButton>
-      <ControlButton>
-        <img src="/members.svg" />
-      </ControlButton>
+      <MembersDropup roomId={roomId} />
     </ControlContainer>
   )
 }
