@@ -56,12 +56,13 @@ const ReferenceWord = styled.div`
   font-weight: bold;
   color: ${colors.text.bold};
   font-size: 1.8rem;
-  padding-bottom: 1.0rem;
-  letter-spacing:0.2em;
+  padding-bottom: 1rem;
+  letter-spacing: 0.2em;
 `
 
 const ReferenceDetail = styled.div`
-  font-family:'メイリオ', 'Meiryo','ＭＳ ゴシック','Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3',sans-serif;
+  font-family: 'メイリオ', 'Meiryo', 'ＭＳ ゴシック',
+    'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', sans-serif;
   font-size: 1.2rem;
   color: ${colors.text.detail};
   line-height: 1.5;
@@ -115,9 +116,7 @@ const RoomPage: PageFC<{ roomId: string }> = ({ roomId }) => {
           <Control roomId={roomId} user={userStorage} />
         </LeftBottomBox>
         <RightTopBox>
-          <ReferenceWord>
-            {refWord}
-          </ReferenceWord>
+          <ReferenceWord>{refWord}</ReferenceWord>
           {refWord ? (
             <a
               target="_blank"

@@ -4,8 +4,7 @@ import { WordData } from '../scheme/db'
 import styled from 'styled-components'
 import firebase from '../utils/firebase'
 
-const CaptionContainer = styled.div`
-`
+const CaptionContainer = styled.div``
 
 const CaptionItem = styled.div`
   &:not(:first-child) {
