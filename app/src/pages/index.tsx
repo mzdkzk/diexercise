@@ -14,6 +14,9 @@ const Title = styled.h1`
   margin-top: 10rem;
   font-size: 3rem;
   line-height: 3rem;
+  img {
+    max-width: 30rem;
+  }
 `
 
 const Button = styled.button`
@@ -73,7 +76,9 @@ const IndexPage: PageFC = () => {
 
   return (
     <Layout>
-      <Title>Live※Reference</Title>
+      <Title>
+        <img src="/title.svg" />
+      </Title>
       <form onSubmit={onSubmitHandler}>
         <Input
           onChange={onChangeHandler}
