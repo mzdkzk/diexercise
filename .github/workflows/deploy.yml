@@ -1,0 +1,28 @@
+name: Build and Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      migrate-azure
+
+env:
+  IMAGE_NAME: live-reference
+  IMAGE_REGISTRY: livereferencecr.azurecr.io
+
+jobs:
+  setup-build-deploy:
+    name: Setup, Build, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Container Registryへのデプロイ
+        run: |
+            docker build -t $IMAGE_REGISTRY/$IMAGE_NAME:${{ github.sha }}
+            docker push $IMAGE_REGISTRY/$IMAGE_NAME:${{ github.sha }}
