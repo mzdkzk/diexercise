@@ -1,9 +1,8 @@
-name: Build and Deploy to Cloud Run
+name: Build and Deploy
 
 on:
   push:
-    branches:
-      migrate-azure
+    branches: migrate-azure
 
 env:
   IMAGE_REGISTRY: livereferencecr.azurecr.io
@@ -25,5 +24,19 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Container Registryへのデプロイ
         run: |
-            docker build -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:latest ./app
-            docker push $IMAGE_NAME
+          docker build -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:latest ./app
+          docker push $IMAGE_NAME
+      - name: "Container Instancesへのデプロイ"
+        run: |
+          FIREBASE_SA_KEY_BASE64=$(echo $FIREBASE_SA_KEY | openssl enc -e -base64)
+          az container create --resource-group livereferenceResourceGroup \
+            --name livereference-app \
+            --image $IMAGE_NAME \
+            --cpu 1 \
+            --memory 1 \
+            --registry-login-server $IMAGE_REGISTRY \
+            --registry-username $REGISTRY_USERNAME \
+            --registry-password REGISTRY_PASSWORD \
+            --dns-name-label livereference \
+            --environment-variables FIREBASE_SA_KEY_BASE64=$FIREBASE_SA_KEY_BASE64
+            --ports 80
