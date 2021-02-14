@@ -35,8 +35,8 @@ jobs:
             --cpu 1 \
             --memory 1 \
             --registry-login-server $IMAGE_REGISTRY \
-            --registry-username $REGISTRY_USERNAME \
-            --registry-password REGISTRY_PASSWORD \
+            --registry-username ${{ secrets.REGISTRY_USERNAME }} \
+            --registry-password ${{ secrets.REGISTRY_PASSWORD }} \
             --dns-name-label livereference \
-            --environment-variables FIREBASE_SA_KEY_BASE64=$FIREBASE_SA_KEY_BASE64
+            --environment-variables FIREBASE_SA_KEY_BASE64=$FIREBASE_SA_KEY_BASE64 \
             --ports 80
