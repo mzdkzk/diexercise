@@ -24,4 +24,4 @@ jobs:
       - name: Container Registryへのデプロイ
         run: |
             docker build -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:latest ./app
-            docker push $IMAGE_REGISTRY/$IMAGE_NAME:${{ github.sha }}
+            docker push $IMAGE_NAME
