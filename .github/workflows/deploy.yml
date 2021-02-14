@@ -1,0 +1,42 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: master
+
+env:
+  IMAGE_REGISTRY: livereferencecr.azurecr.io
+  IMAGE_NAME: livereferencecr.azurecr.io/livereference
+
+jobs:
+  setup-build-deploy:
+    name: Setup, Build, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Container Registryへのデプロイ
+        run: |
+          docker build -t $IMAGE_NAME:${{ github.sha }} ./app
+          docker push $IMAGE_NAME:${{ github.sha }}
+      - name: "Container Instancesへのデプロイ"
+        run: |
+          FIREBASE_SA_KEY_BASE64=$(echo $FIREBASE_SA_KEY | openssl enc -e -base64)
+          az container create --resource-group livereferenceResourceGroup \
+            --name livereference-app \
+            --image $IMAGE_NAME:${{ github.sha }} \
+            --cpu 1 \
+            --memory 1 \
+            --registry-login-server $IMAGE_REGISTRY \
+            --registry-username ${{ secrets.REGISTRY_USERNAME }} \
+            --registry-password ${{ secrets.REGISTRY_PASSWORD }} \
+            --dns-name-label livereference \
+            --environment-variables FIREBASE_SA_KEY_BASE64=$FIREBASE_SA_KEY_BASE64 PORT=80 \
+            --ports 80
