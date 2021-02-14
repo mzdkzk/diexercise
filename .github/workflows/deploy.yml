@@ -6,6 +6,7 @@ on:
       migrate-azure
 
 env:
+  IMAGE_REGISTRY: livereferencecr.azurecr.io
   IMAGE_NAME: livereferencecr.azurecr.io/live-reference
 
 jobs:
