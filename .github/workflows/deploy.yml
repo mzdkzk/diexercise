@@ -7,21 +7,22 @@ on:
 
 env:
   IMAGE_REGISTRY: livereferencecr.azurecr.io
-  IMAGE_NAME: livereferencecr.azurecr.io/live-reference
+  IMAGE_NAME: livereferencecr.azurecr.io/livereference
 
 jobs:
   setup-build-deploy:
     name: Setup, Build, and Deploy
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       - uses: azure/docker-login@v1
         with:
           login-server: ${{ env.IMAGE_REGISTRY }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-
       - name: Container Registryへのデプロイ
         run: |
             docker build -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:latest ./app
