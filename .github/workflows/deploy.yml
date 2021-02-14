@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches: migrate-azure
+    branches: master
 
 env:
   IMAGE_REGISTRY: livereferencecr.azurecr.io
