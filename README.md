@@ -37,7 +37,7 @@ $ yarn && yarn dev
 以下のコマンドを実行することで`/api`以下を呼び出す際に本番環境のものを使用します。
 
 ```bash
-$ echo NEXT_PUBLIC_API_BASE_URL=https://live-reference-wcvgewglma-an.a.run.app > app/.env.local
+$ echo NEXT_PUBLIC_API_BASE_URL={本番環境のURL} > app/.env.local
 ```
 
 http://localhost:3000 などにアクセスして開発を開始できます
