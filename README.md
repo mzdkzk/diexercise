@@ -1,6 +1,6 @@
 # Live※Reference
 
-* Web: https://live-reference-wcvgewglma-an.a.run.app
+* Web: http://livereference.japaneast.azurecontainer.io
 * Repo: https://github.com/mzdkzk/diexercise
 
 ## 概要
