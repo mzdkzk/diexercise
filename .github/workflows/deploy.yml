@@ -28,7 +28,7 @@ jobs:
           docker push $IMAGE_NAME:${{ github.sha }}
       - name: "Container Instancesへのデプロイ"
         run: |
-          FIREBASE_SA_KEY_BASE64=$(echo $FIREBASE_SA_KEY | openssl enc -e -base64)
+          FIREBASE_SA_KEY_BASE64=$(echo ${{ secrets.FIREBASE_SA_KEY }} | openssl enc -e -base64)
           az container create --resource-group livereferenceResourceGroup \
             --name livereference-app \
             --image $IMAGE_NAME:${{ github.sha }} \
