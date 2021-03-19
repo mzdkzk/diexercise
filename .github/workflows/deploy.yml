@@ -38,5 +38,5 @@ jobs:
             --registry-username ${{ secrets.REGISTRY_USERNAME }} \
             --registry-password ${{ secrets.REGISTRY_PASSWORD }} \
             --dns-name-label livereference \
-            --environment-variables FIREBASE_SA_KEY_BASE64=$FIREBASE_SA_KEY_BASE64 PORT=80 \
+            --environment-variables "FIREBASE_SA_KEY_BASE64"="$FIREBASE_SA_KEY_BASE64" "PORT"="80" \
             --ports 80
