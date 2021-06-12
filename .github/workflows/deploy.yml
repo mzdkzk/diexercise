@@ -33,6 +33,7 @@ jobs:
           az webapp config appsettings set --resource-group livereferenceResourceGroup \
             --name livereference-app \
             --settings WEBSITES_PORT=3000 FIREBASE_SA_KEY_BASE64="$FIREBASE_SA_KEY_BASE64" \
+            1>/dev/null
       - name: "AppServiceを再起動"
         run: |
           az webapp restart  --resource-group livereferenceResourceGroup \
