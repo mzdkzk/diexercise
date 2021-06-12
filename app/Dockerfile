@@ -21,4 +21,5 @@ RUN yarn --production
 RUN yarn cache clean
 
 RUN chmod +x /app/start.sh
+EXPOSE 3000 2222
 CMD ["/app/start.sh"]
