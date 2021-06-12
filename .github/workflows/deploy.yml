@@ -36,14 +36,11 @@ jobs:
         run: |
           FIREBASE_SA_KEY_BASE64=$(echo $FIREBASE_SA_KEY | openssl enc -e -base64)
           az webapp config appsettings set --resource-group livereferenceResourceGroup \
-            --name livereference-app \
+            --name livereference \
             --settings WEBSITES_PORT=3000 \
               FIREBASE_SA_KEY_BASE64="$FIREBASE_SA_KEY_BASE64" \
-              DOCKER_REGISTRY_SERVER_URL=https://${{ env.IMAGE_REGISTRY }} \
-              DOCKER_REGISTRY_SERVER_URERNAME=${{ secrets.REGISTRY_USERNAME }} \
-              DOCKER_REGISTRY_SERVER_PASSWORD=${{ secrets.REGISTRY_PASSWORD }} \
             1>/dev/null
       - name: "AppServiceを再起動"
         run: |
           az webapp restart  --resource-group livereferenceResourceGroup \
-            --name livereference-app
+            --name livereference
