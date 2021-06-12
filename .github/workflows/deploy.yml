@@ -31,7 +31,8 @@ jobs:
             --cache-from=$IMAGE_NAME:latest \
             --build-arg BUILDKIT_INLINE_CACHE=1 \
             ./app
-          docker push $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:${{ github.sha }}
+          docker push $IMAGE_NAME:latest
       - name: "AppServiceのConfigを更新"
         run: |
           FIREBASE_SA_KEY_BASE64=$(echo $FIREBASE_SA_KEY | openssl enc -e -base64)
