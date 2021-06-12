@@ -24,8 +24,13 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Container Registryへのデプロイ
+      　env:
+          DOCKER_BUILDKIT: 1
         run: |
-          docker build -t $IMAGE_NAME:${{ github.sha }} ./app
+          docker build -t $IMAGE_NAME:${{ github.sha }} \
+            --cache-from=$IMAGE_NAME:latest \
+            --build-arg BUILDKIT_INLINE_CACHE=1 \
+            ./app
           docker push $IMAGE_NAME:${{ github.sha }}
       - name: "AppServiceのConfigを更新"
         run: |
