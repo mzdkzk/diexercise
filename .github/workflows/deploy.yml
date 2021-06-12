@@ -5,8 +5,8 @@ on:
     branches: migrate-appservice
 
 env:
-  IMAGE_REGISTRY: livereferencecr.azurecr.io
-  IMAGE_NAME: livereferencecr.azurecr.io/livereference
+  IMAGE_REGISTRY: livereference.azurecr.io
+  IMAGE_NAME: livereference.azurecr.io/livereference
   FIREBASE_SA_KEY: ${{ secrets.FIREBASE_SA_KEY }}
 
 jobs:
@@ -32,7 +32,11 @@ jobs:
           FIREBASE_SA_KEY_BASE64=$(echo $FIREBASE_SA_KEY | openssl enc -e -base64)
           az webapp config appsettings set --resource-group livereferenceResourceGroup \
             --name livereference-app \
-            --settings WEBSITES_PORT=3000 FIREBASE_SA_KEY_BASE64="$FIREBASE_SA_KEY_BASE64" \
+            --settings WEBSITES_PORT=3000 \
+              FIREBASE_SA_KEY_BASE64="$FIREBASE_SA_KEY_BASE64" \
+              DOCKER_REGISTRY_SERVER_URL=https://${{ env.IMAGE_REGISTRY }} \
+              DOCKER_REGISTRY_SERVER_URERNAME=${{ secrets.REGISTRY_USERNAME }} \
+              DOCKER_REGISTRY_SERVER_PASSWORD=${{ secrets.REGISTRY_PASSWORD }} \
             1>/dev/null
       - name: "AppServiceを再起動"
         run: |
