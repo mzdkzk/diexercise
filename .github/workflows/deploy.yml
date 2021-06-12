@@ -5,8 +5,8 @@ on:
     branches: migrate-appservice
 
 env:
-  IMAGE_REGISTRY: livereference.azurecr.io
-  IMAGE_NAME: livereference.azurecr.io/livereference
+  IMAGE_REGISTRY: livereferencecr.azurecr.io
+  IMAGE_NAME: livereferencecr.azurecr.io/livereference
   FIREBASE_SA_KEY: ${{ secrets.FIREBASE_SA_KEY }}
 
 jobs:
