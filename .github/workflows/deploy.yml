@@ -24,7 +24,7 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Container Registryへのデプロイ
-      　env:
+        env:
           DOCKER_BUILDKIT: 1
         run: |
           docker build -t $IMAGE_NAME:${{ github.sha }} \
